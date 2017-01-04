@@ -2,6 +2,7 @@
 #define TIMEHOUR_H
 
 #include <string>
+#include <ostream>
 
 class TimeHour
 {

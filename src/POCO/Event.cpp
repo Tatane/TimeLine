@@ -1,5 +1,5 @@
 #include "Event.h"
-
+#include <cstdio>
 
 Event::Event(void)
 {
@@ -53,4 +53,10 @@ void Event::setDescription(std::string text)
 	description = text;
 }
 
-
+std::string Event::getText() const
+{
+//	std::string ret;
+	char buf[2000];
+	sprintf(buf, "%s %s %s %s", getStartTime().getText().c_str(), getEndTime().getText().c_str(), getTitle().c_str(), getDescription().c_str());
+	return std::string(buf);
+}

@@ -4,7 +4,6 @@
 #include <ctime>
 #include <string>
 #include "TimeHour.h"
-//#define Time std::tm
 
 class Event
 {
@@ -26,6 +25,8 @@ public:
 	TimeHour getEndTime() const;
 	std::string getTitle() const;
 	std::string getDescription() const;
+
+	std::string getText() const;
 
 };
 
