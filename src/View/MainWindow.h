@@ -7,10 +7,15 @@
 class MainWindow
 {
 public:
-	MainWindow(void);
+	MainWindow(std::vector<Event*> *);
 	~MainWindow(void);
 
-	void displayEvents(const std::vector<Event*> & vecEvents) const;
+	void loop();
+	void displayEvents() const;
+	void displayMenu() const;
+
+private:
+	std::vector<Event*> * vecEvents;
 };
 
 #endif // MAINWINDOW_H

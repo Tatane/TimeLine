@@ -32,22 +32,6 @@ DataAcces::~DataAcces(void)
 
 void DataAcces::getAllEvents(std::vector<Event*> * vecEvents)
 {
-	/*
-	Event * event1 = new Event();
-	event1->setStartTime(2001, 01, 01, 0, 0, 0);
-	event1->setEndTime(2001, 12, 31, 23, 59, 59);
-	event1->setTitle("Annee 2001");
-	event1->setDescription("Il s'agit de l'année 2001");
-	vecEvents->push_back(event1);
-
-	Event * event2 = new Event();
-	event2->setStartTime(2014, 9, 2, 15, 0, 0);
-	event2->setEndTime(2015, 9, 1, 23, 59, 59);
-	event2->setTitle("PVT 2014");
-	event2->setDescription("Premier PVT 2014-2015");
-	vecEvents->push_back(event2);
-	*/
-
 	sqlite3_stmt * statement;
 	const char * requete = "SELECT * FROM event";
 	int ret = sqlite3_prepare_v2(db, requete, strlen(requete), &statement, NULL);
@@ -59,10 +43,8 @@ void DataAcces::getAllEvents(std::vector<Event*> * vecEvents)
 	while (sqlite3_step(statement) == SQLITE_ROW){
 		Event * event = new Event;
 		databaseStatementToEvent(statement, event);
-		//std::cout<<event->getEndTime().getText()<<" "<<event->getDescription()<<std::endl;
-		std::cout<<event->getText();
+		vecEvents->push_back(event);
 	}
-
 }
 
 void DataAcces::databaseStatementToEvent(sqlite3_stmt * statement, Event * event)

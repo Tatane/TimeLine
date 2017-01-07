@@ -14,10 +14,8 @@ int main(int argc, char* argv[])
 
 
 
-	MainWindow mw;
-	mw.displayEvents(vecEvents);
-
-	getchar();
+	MainWindow mw(&vecEvents);
+	mw.loop();
 
 	// detruire les Events présents dans le vecteur :
 	std::vector<Event*>::const_iterator it;
