@@ -23,11 +23,11 @@ void TimeHour::set(int year, int month, int day, int hour, int minute, int secon
 	t.tm_sec = second;
 }
 
-std::string TimeHour::getText()
+std::string TimeHour::toString()
 {
 	char buf[256];
 	int s = sizeof(buf);
-	std::strftime(buf, sizeof(buf), "%Y/%m/%d %H:%M:%S", &t);
+	std::strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &t);
 
 	return std::string(buf);
 }

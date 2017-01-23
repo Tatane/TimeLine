@@ -57,6 +57,6 @@ std::string Event::getText() const
 {
 //	std::string ret;
 	char buf[2000];
-	sprintf(buf, "%s %s %s %s", getStartTime().getText().c_str(), getEndTime().getText().c_str(), getTitle().c_str(), getDescription().c_str());
+	sprintf(buf, "%s %s %s %s", getStartTime().toString().c_str(), getEndTime().toString().c_str(), getTitle().c_str(), getDescription().c_str());
 	return std::string(buf);
 }

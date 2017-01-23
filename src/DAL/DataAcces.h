@@ -16,6 +16,7 @@ public:
 	~DataAcces(void);
 
 	void getAllEvents(std::vector<Event*> * vecEvents);
+	void insertEvent(const Event *);
 
 	void databaseStatementToEvent(sqlite3_stmt * stmt, Event * event);
 

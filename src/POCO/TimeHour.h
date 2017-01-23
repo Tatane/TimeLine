@@ -14,7 +14,7 @@ public:
 
 	void set(int year, int month, int day, int hour, int minute, int second);
 	tm get() const { return t;}
-	std::string getText();
+	std::string toString();
 };
 
 #endif // TIMEHOUR_H

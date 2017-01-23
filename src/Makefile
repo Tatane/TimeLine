@@ -18,6 +18,6 @@ DAL/DataAcces.o: DAL/DataAcces.cpp DAL/DataAcces.h
 DAL/sqlite3.o: DAL/sqlite3.h DAL/sqlite3.c
 	gcc -c -g DAL/sqlite3.c -o DAL/sqlite3.o
 
-View/MainWindow.o: View/MainWindow.h View/MainWindow.cpp
-	g++ -c -g View/MainWindow.cpp -o View/MainWindow.o
+View/MainWindow.o: View/MainWindow.h View/MainWindow.cpp DAL/DataAcces.h
+	g++ -c -g View/MainWindow.cpp -o View/MainWindow.o -I. 
 

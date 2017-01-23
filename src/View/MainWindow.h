@@ -13,6 +13,7 @@ public:
 	void loop();
 	void displayEvents() const;
 	void displayMenu() const;
+	void displayCreateNewEvent();
 
 private:
 	std::vector<Event*> * vecEvents;
