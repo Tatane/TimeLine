@@ -11,10 +11,19 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = TimeLine
 TEMPLATE = app
 
+INCLUDEPATH += ../../..
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    ../../../DAL/DataAcces.cpp \
+    ../../../DAL/sqlite3.c \
+    ../../../POCO/Event.cpp \
+    ../../../POCO/TimeHour.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    ../../../DAL/DataAcces.h \
+    ../../../DAL/sqlite3.h \
+    ../../../POCO/Event.h \
+    ../../../POCO/TimeHour.h
 
 FORMS    += mainwindow.ui
