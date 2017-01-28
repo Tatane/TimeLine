@@ -3,6 +3,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <cstdio>
+#include <cassert>
 
 DataAcces * DataAcces::instance = NULL;
 
@@ -46,22 +47,63 @@ void DataAcces::getAllEvents(std::vector<Event*> * vecEvents)
 		vecEvents->push_back(event);
 	}
 
-	sqlite3_finalize(statement);
+    sqlite3_finalize(statement);
 }
 
-void DataAcces::insertEvent(const Event* event)
+void DataAcces::getEvents(const TimeHour &begin, const TimeHour &end)
+{
+    assert(false && "DataAcces::getEvents is not implemented.");
+}
+
+bool DataAcces::deleteEvent(const Event &)
+{
+    assert(false && "DataAcces::deleteEvent is not implemented.");
+}
+
+void DataAcces::updateEvent(const Event &)
+{
+    assert(false && "DataAcces::updateEvent is not implemented.");
+}
+
+bool DataAcces::recreateDatabase()
+{
+    assert(false && "DataAcces::recreateDatabase is not implemented.");
+
+    // TODO
+
+
+    sqlite3_stmt * statement;
+
+    const char * creationReq = "CREATE TABLE 'Event'('startTime' DateTime NOT NULL, 'endTime' DateTime NOT NULL)";
+    //'title'	varchar(100),
+    //'description'	varchar(1000),
+    //'id'	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE
+
+
+    int ret = sqlite3_prepare_v2(db, creationReq, strlen(creationReq), &statement, NULL);
+    if (ret != SQLITE_OK) {
+        std::cerr<<"Error on slite3_prepare_v2"<<std::endl;
+        exit(-1);
+    }
+
+    sqlite3_step(statement);
+
+    sqlite3_finalize(statement);
+}
+
+void DataAcces::insertEvent(const Event & newEvent)
 {
 	std::cout<<"insertEvent"<<std::endl;
-	std::cout<<event->getStartTime().toString();
+    std::cout<<newEvent.getStartTime().toString();
 
 	sqlite3_stmt * statement;
 
 	const char * insertReq = "INSERT INTO Event VALUES (?, ?, ?, ?)";
 	int rc = sqlite3_prepare_v2(db, insertReq, strlen(insertReq), &statement, NULL);
-	sqlite3_bind_text(statement, 1, event->getStartTime().toString().c_str(), 20, SQLITE_STATIC);
-	sqlite3_bind_text(statement, 2, "2002-12-31 23:59:59", 20, SQLITE_STATIC);
-	sqlite3_bind_text(statement, 3, "année 2001", 11, SQLITE_STATIC);
-	sqlite3_bind_text(statement, 4, "L'ANNEE 2001 environ", 21, SQLITE_STATIC);
+    sqlite3_bind_text(statement, 1, newEvent.getStartTime().toString().c_str(), 20, SQLITE_STATIC);
+    sqlite3_bind_text(statement, 2, newEvent.getEndTime().toString().c_str(), 20, SQLITE_STATIC);
+    sqlite3_bind_text(statement, 3, newEvent.getTitle().c_str(), 100, SQLITE_STATIC);
+    sqlite3_bind_text(statement, 4, newEvent.getDescription().c_str(), 1000, SQLITE_STATIC);
 	
 	sqlite3_step(statement);
 	sqlite3_finalize(statement);

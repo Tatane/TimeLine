@@ -16,7 +16,11 @@ public:
 	~DataAcces(void);
 
 	void getAllEvents(std::vector<Event*> * vecEvents);
-	void insertEvent(const Event *);
+    void getEvents(const TimeHour & begin, const TimeHour & end);
+    void insertEvent(const Event & newEvent);
+    bool deleteEvent(const Event &);
+    void updateEvent(const Event &);
+    bool recreateDatabase() ;
 
 	void databaseStatementToEvent(sqlite3_stmt * stmt, Event * event);
 
