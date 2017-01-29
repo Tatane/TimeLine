@@ -22,6 +22,14 @@ public:
     void updateEvent(const Event &);
     bool recreateDatabase() ;
 
+    enum EVENT_TABLE_FIELDS {
+        idField,
+        startField,
+        endField,
+        titleField,
+        descriptionField
+    };
+
 	void databaseStatementToEvent(sqlite3_stmt * stmt, Event * event);
 
 };

@@ -113,23 +113,49 @@ void DataAcces::insertEvent(const Event & newEvent)
 void DataAcces::databaseStatementToEvent(sqlite3_stmt * statement, Event * event)
 {
 	int year, month, day, hour, minute, second;
-	const unsigned char * val = sqlite3_column_text(statement, 0);
+
+    const unsigned char * val = sqlite3_column_text(statement, idField);
+    if (val != 0){
+        int id = 0;
+        std::cout<<"Field "<<idField<<" = "<<val<<std::endl;
+        sscanf((const char *)val, "%d", &id);
+        event->setId(id);
+    } else {
+        std::cout<<"No value"<<std::endl;
+    }
+
+    val = sqlite3_column_text(statement, startField);
 	if (val != 0){
-		std::cout<<"Val="<<val<<std::endl;
+        std::cout<<"Field "<<startField<<" = "<<val<<std::endl;
 		sscanf((const char *)val, "%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
 		event->setStartTime(year, month, day, hour, minute, second);
 	} else {
 		std::cout<<"No value"<<std::endl;
 	}
 
-	val = sqlite3_column_text(statement, 1);
+    val = sqlite3_column_text(statement, endField);
 	if (val != 0){
-		std::cout<<"Val="<<val<<std::endl;
+        std::cout<<"Field "<<endField<<" = "<<val<<std::endl;
 		sscanf((const char *)val, "%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
 		event->setEndTime(year, month, day, hour, minute, second);
 	} else {
 		std::cout<<"No value"<<std::endl;
 	}
+
+    val = sqlite3_column_text(statement, titleField);
+    if (val != 0){
+        std::cout<<"Field "<<titleField<<" = "<<val<<std::endl;
+        //sscanf((const char*)val, "%s")
+        event->setTitle((const char*)val);
+    }
+
+    val = sqlite3_column_text(statement, descriptionField);
+    if (val != 0){
+        std::cout<<"Field "<<descriptionField<<" = "<<val<<std::endl;
+        //sscanf((const char*)val, "%s")
+        event->setDescription((const char*)val);
+    }
+
 /*	
 	event->setTitle(std::string((const char*)sqlite3_column_text(statement, 2)));
 	event->setDescription(std::string((const char*)sqlite3_column_text(statement, 3)));
