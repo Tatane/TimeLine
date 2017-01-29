@@ -1,9 +1,11 @@
 #include "TimeHour.h"
 #include <ctime>
 #include <sstream>
+#include <cstring>
 
 TimeHour::TimeHour(void)
 {
+    memset(&t, 0, sizeof(t));
 }
 
 
