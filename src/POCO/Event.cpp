@@ -2,12 +2,22 @@
 #include <cstdio>
 
 Event::Event(void)
+    : id(0)
+    , startTime()
+    , endTime()
+    , title("")
+    , description("")
 {
 }
 
 
 Event::~Event(void)
 {
+}
+
+int Event::getId() const
+{
+    return id;
 }
 
 TimeHour Event::getStartTime() const
@@ -30,6 +40,10 @@ std::string Event::getDescription() const
 	return description;
 }
 
+void Event::setId(int id)
+{
+    this->id = id;
+}
 
 void Event::setStartTime(int year, int month, int day, int hour, int minute, int second)
 {
@@ -50,8 +64,9 @@ void Event::setTitle(std::string text)
 
 void Event::setDescription(std::string text)
 {
-	description = text;
+    description = text;
 }
+
 
 std::string Event::getText() const
 {
