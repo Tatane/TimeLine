@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <vector>
-#include "../POCO/Event.h"
+#include "POCO/Event.h"
 
 class MainWindow
 {

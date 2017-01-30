@@ -111,7 +111,7 @@ void MainWindow::displayCreateNewEvent()
 	cout<<newEvent->getStartTime().toString()<<endl;
 	cout<<newEvent->getEndTime().toString()<<endl;
 
-	DataAcces::getInstance()->insertEvent(*newEvent);
+	DataAcces::getInstance()->insertEvent(newEvent);
 }
 
 void MainWindow::displayMenu() const

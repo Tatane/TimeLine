@@ -1,6 +1,6 @@
 #include "DAL/DataAcces.h"
 #include "POCO/Event.h"
-#include "View/MainWindow.h"
+#include "View/Console/MainWindow.h"
 
 #include <cstdio>
 #include <vector>

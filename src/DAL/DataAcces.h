@@ -2,8 +2,16 @@
 #define DATAACCES_H
 
 #include <vector>
-#include "../POCO/Event.h"
+#include "POCO/Event.h"
 #include "sqlite3.h"
+
+
+static const char * TABLE_EVENT = "Event";
+static const char * TABLE_EVENT_COLUMN_ID = "id";
+static const char * TABLE_EVENT_COLUMN_STARTTIME = "startTime";
+static const char * TABLE_EVENT_COLUMN_ENDTIME = "endTime";
+static const char * TABLE_EVENT_COLUMN_TITLE = "title";
+static const char * TABLE_EVENT_COLUMN_DESCRIPTION = "description";
 
 class DataAcces
 {
@@ -17,17 +25,19 @@ public:
 
 	void getAllEvents(std::vector<Event*> * vecEvents);
     void getEvents(const TimeHour & begin, const TimeHour & end);
-    void insertEvent(const Event & newEvent);
+    void insertEvent(Event * newEvent);
     bool deleteEvent(const Event &);
     void updateEvent(const Event &);
     bool recreateDatabase() ;
 
-    enum EVENT_TABLE_FIELDS {
-        idField,
-        startField,
-        endField,
-        titleField,
-        descriptionField
+    struct Columns_Event_Table{
+        enum {
+            idField,
+            startField,
+            endField,
+            titleField,
+            descriptionField
+        };
     };
 
 	void databaseStatementToEvent(sqlite3_stmt * stmt, Event * event);
