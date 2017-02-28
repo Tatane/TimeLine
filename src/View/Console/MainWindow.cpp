@@ -30,13 +30,10 @@ void MainWindow::loop()
 
 		int carac = 0;
 		//cin>>carac;
-
-		char command[3] = "\0";
-		fgets(command, 3, stdin);
-		sscanf(command, "%d", &carac);
-
-		int c;
-		while (c=getchar() != '\n' && c != EOF){}
+		
+		string s;
+		getline(cin, s);
+		sscanf(s.c_str(), "%d", &carac);
 
 		switch (carac) {
 		case DisplayEvents:
