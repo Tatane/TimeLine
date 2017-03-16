@@ -1,5 +1,5 @@
 #include "DAL/DataAcces.h"
-#include "POCO/Event.h"
+#include "POCO/Fact.h"
 #include "View/Console/MainWindow.h"
 
 #include <cstdio>
@@ -9,17 +9,17 @@ int main(int argc, char* argv[])
 {
 	
 	
-	std::vector<Event*> vecEvents;
-	DataAcces::getInstance()->getAllEvents(&vecEvents);
+	std::vector<Fact*> vecFacts;
+	DataAcces::getInstance()->getAllFacts(&vecFacts);
 
 
 
-	MainWindow mw(&vecEvents);
+	MainWindow mw(&vecFacts);
 	mw.loop();
 
-	// detruire les Events présents dans le vecteur :
-	std::vector<Event*>::const_iterator it;
-	for(it = vecEvents.begin(); it != vecEvents.end(); ++it)
+	// detruire les Facts présents dans le vecteur :
+	std::vector<Fact*>::const_iterator it;
+	for(it = vecFacts.begin(); it != vecFacts.end(); ++it)
 	{
 		delete *it;
 	}

@@ -16,12 +16,12 @@ INCLUDEPATH += ../../..
 SOURCES += main.cpp\
     ../../../DAL/DataAcces.cpp \
     ../../../DAL/sqlite3.c \
-    ../../../POCO/Event.cpp \
+    ../../../POCO/Fact.cpp \
     ../../../POCO/TimeHour.cpp \
 
 HEADERS  += ../../../DAL/DataAcces.h \
     ../../../DAL/sqlite3.h \
-    ../../../POCO/Event.h \
+    ../../../POCO/Fact.h \
     ../../../POCO/TimeHour.h
 
 DISTFILES += \

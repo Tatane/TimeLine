@@ -2,16 +2,16 @@
 #define DATAACCES_H
 
 #include <vector>
-#include "POCO/Event.h"
+#include "POCO/Fact.h"
 #include "sqlite3.h"
 
 
-static const char * TABLE_EVENT = "Event";
-static const char * TABLE_EVENT_COLUMN_ID = "id";
-static const char * TABLE_EVENT_COLUMN_STARTTIME = "startTime";
-static const char * TABLE_EVENT_COLUMN_ENDTIME = "endTime";
-static const char * TABLE_EVENT_COLUMN_TITLE = "title";
-static const char * TABLE_EVENT_COLUMN_DESCRIPTION = "description";
+static const char * TABLE_FACT = "Fact";
+static const char * TABLE_FACT_COLUMN_ID = "id";
+static const char * TABLE_FACT_COLUMN_STARTTIME = "startTime";
+static const char * TABLE_FACT_COLUMN_ENDTIME = "endTime";
+static const char * TABLE_FACT_COLUMN_TITLE = "title";
+static const char * TABLE_FACT_COLUMN_DESCRIPTION = "description";
 
 class DataAcces
 {
@@ -23,14 +23,14 @@ public:
 	static DataAcces * instance;
 	~DataAcces(void);
 
-	void getAllEvents(std::vector<Event*> * vecEvents);
-    void getEvents(const TimeHour & begin, const TimeHour & end);
-    void insertEvent(Event * newEvent);
-    bool deleteEvent(const Event &);
-    void updateEvent(const Event &);
+	void getAllFacts(std::vector<Fact*> * vecFacts);
+    void getFacts(const TimeHour & begin, const TimeHour & end);
+    void insertFact(Fact * newFact);
+    bool deleteFact(const Fact &);
+    void updateFact(const Fact &);
     bool recreateDatabase() ;
 
-    struct Columns_Event_Table{
+    struct Columns_Fact_Table{
         enum {
             idField,
             startField,
@@ -40,7 +40,7 @@ public:
         };
     };
 
-	void databaseStatementToEvent(sqlite3_stmt * stmt, Event * event);
+	void databaseStatementToFact(sqlite3_stmt * stmt, Fact * fact);
 
 };
 

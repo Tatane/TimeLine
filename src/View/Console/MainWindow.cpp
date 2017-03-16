@@ -5,8 +5,8 @@
 
 using namespace std;
 
-MainWindow::MainWindow(std::vector<Event*> * vec)
-	: vecEvents(vec)
+MainWindow::MainWindow(std::vector<Fact*> * vec)
+	: vecFacts(vec)
 {
 }
 
@@ -16,8 +16,8 @@ MainWindow::~MainWindow(void)
 }
 
 enum Commands{
-	DisplayEvents = 1,
-	CreateNewEvent,
+	DisplayFacts = 1,
+	CreateNewFact,
 	Quit,
 	NbCommands	
 };
@@ -36,11 +36,11 @@ void MainWindow::loop()
 		sscanf(s.c_str(), "%d", &carac);
 
 		switch (carac) {
-		case DisplayEvents:
-			displayEvents();
+		case DisplayFacts:
+			displayFacts();
 			break;
-		case CreateNewEvent:
-			displayCreateNewEvent();
+		case CreateNewFact:
+			displayCreateNewFact();
 			break;
 		case Quit:
 			exitLoop = true;
@@ -51,20 +51,20 @@ void MainWindow::loop()
 	
 }
 
-void MainWindow::displayEvents() const
+void MainWindow::displayFacts() const
 {
-	std::vector<Event*>::const_iterator it;
-	for(it=vecEvents->begin(); it != vecEvents->end(); ++it)
+	std::vector<Fact*>::const_iterator it;
+	for(it=vecFacts->begin(); it != vecFacts->end(); ++it)
 	{
-		Event* evt = *it;
+		Fact* evt = *it;
 		std::cout<<evt->getStartTime().toString()<<" - "<<evt->getEndTime().toString()<<" - "<<evt->getTitle()<<" - "<<evt->getDescription()<<std::endl;
 	}
 	
 }
 
-void MainWindow::displayCreateNewEvent()
+void MainWindow::displayCreateNewFact()
 {
-	Event * newEvent = new Event;
+	Fact * newFact = new Fact;
 	
 	//while(int c = getchar() && c!=EOF){};
 
@@ -73,7 +73,7 @@ void MainWindow::displayCreateNewEvent()
 	//fscanf(stdin, "%100s", title);
 	fgets(title, 100, stdin);
 	cout<<title<<endl;	
-	newEvent->setTitle(string(title));
+	newFact->setTitle(string(title));
 
 
 	char description[1000];
@@ -81,40 +81,40 @@ void MainWindow::displayCreateNewEvent()
 	fgets(description, 1000, stdin);
 	//cin>>description;
 	cout<<description<<endl;	
-	newEvent->setDescription(string(description));
+	newFact->setDescription(string(description));
 
 	int year = 0, month = 0, day = 0, hour = 0, minute = 0, second = 0;
-	cout<<"START of Event"<<endl<<"----------"<<endl;
+	cout<<"START of Fact"<<endl<<"----------"<<endl;
 	cout<<"Date (YYYY-MM-DD) : ";
 	fscanf(stdin, "%4d-%2d-%2d", &year, &month, &day);
 	cout<<"Time (hh:mm:ss : ";
 	fscanf(stdin, "%d:%d:%d", &hour, &minute, &second);
 	
 	cout<<year<<"-"<<month<<"-"<<day<<" "<<hour<<":"<<minute<<":"<<second<<endl;
-	newEvent->setStartTime(year, month, day, hour, minute, second);
+	newFact->setStartTime(year, month, day, hour, minute, second);
 
-	cout<<"END of Event"<<endl<<"----------"<<endl;
+	cout<<"END of Fact"<<endl<<"----------"<<endl;
 	cout<<"Date (YYYY-MM-DD) : ";
 	fscanf(stdin, "%4d-%2d-%2d", &year, &month, &day);
 	cout<<"Time (hh:mm:ss : ";
 	fscanf(stdin, "%d:%d:%d", &hour, &minute, &second);
 	
 	cout<<year<<"-"<<month<<"-"<<day<<" "<<hour<<":"<<minute<<":"<<second<<endl;
-	newEvent->setEndTime(year, month, day, hour, minute, second);
+	newFact->setEndTime(year, month, day, hour, minute, second);
 
-	cout<<endl<<"NEW EVENT will be created : "<<endl;
-	cout<<newEvent->getTitle()<<endl;
-	cout<<newEvent->getDescription()<<endl;
-	cout<<newEvent->getStartTime().toString()<<endl;
-	cout<<newEvent->getEndTime().toString()<<endl;
+	cout<<endl<<"NEW FACT will be created : "<<endl;
+	cout<<newFact->getTitle()<<endl;
+	cout<<newFact->getDescription()<<endl;
+	cout<<newFact->getStartTime().toString()<<endl;
+	cout<<newFact->getEndTime().toString()<<endl;
 
-	DataAcces::getInstance()->insertEvent(newEvent);
+	DataAcces::getInstance()->insertFact(newFact);
 }
 
 void MainWindow::displayMenu() const
 {
 	std::cout<<"---- MENU ----"<<endl;
-	std::cout<<DisplayEvents<<" - Display events"<<endl;
-	std::cout<<CreateNewEvent<<" - Create NEW event"<<endl;
+	std::cout<<DisplayFacts<<" - Display Facts"<<endl;
+	std::cout<<CreateNewFact<<" - Create NEW fact"<<endl;
 	std::cout<<Quit<<" - Quit"<<endl;
 }

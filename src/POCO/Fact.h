@@ -1,11 +1,11 @@
-#ifndef EVENT_H
-#define EVENT_H
+#ifndef FACT_H
+#define FACT_H
 
 #include <ctime>
 #include <string>
 #include "TimeHour.h"
 
-class Event
+class Fact
 {
     unsigned int id;
 	TimeHour startTime;
@@ -14,8 +14,8 @@ class Event
 	std::string description;
 
 public:
-	Event(void);
-	virtual ~Event(void);
+	Fact(void);
+	virtual ~Fact(void);
 
     void setId(int id);
 	void setStartTime(int year, int month, int day, int hour, int minute, int second);
@@ -33,4 +33,4 @@ public:
 
 };
 
-#endif // EVENT_H
+#endif // FACT_H

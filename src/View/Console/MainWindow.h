@@ -2,21 +2,21 @@
 #define MAINWINDOW_H
 
 #include <vector>
-#include "POCO/Event.h"
+#include "POCO/Fact.h"
 
 class MainWindow
 {
 public:
-	MainWindow(std::vector<Event*> *);
+	MainWindow(std::vector<Fact*> *);
 	~MainWindow(void);
 
 	void loop();
-	void displayEvents() const;
+	void displayFacts() const;
 	void displayMenu() const;
-	void displayCreateNewEvent();
+	void displayCreateNewFact();
 
 private:
-	std::vector<Event*> * vecEvents;
+	std::vector<Fact*> * vecFacts;
 };
 
 #endif // MAINWINDOW_H

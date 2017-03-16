@@ -1,7 +1,7 @@
-#include "Event.h"
+#include "Fact.h"
 #include <cstdio>
 
-Event::Event(void)
+Fact::Fact(void)
     : id(0)
     , startTime()
     , endTime()
@@ -11,64 +11,64 @@ Event::Event(void)
 }
 
 
-Event::~Event(void)
+Fact::~Fact(void)
 {
 }
 
-int Event::getId() const
+int Fact::getId() const
 {
     return id;
 }
 
-TimeHour Event::getStartTime() const
+TimeHour Fact::getStartTime() const
 {
 	return startTime;
 }
 
-TimeHour Event::getEndTime() const
+TimeHour Fact::getEndTime() const
 {
 	return endTime;
 }
 
-std::string Event::getTitle() const
+std::string Fact::getTitle() const
 {
 	return title;
 }
 
-std::string Event::getDescription() const
+std::string Fact::getDescription() const
 {
 	return description;
 }
 
-void Event::setId(int id)
+void Fact::setId(int id)
 {
     this->id = id;
 }
 
-void Event::setStartTime(int year, int month, int day, int hour, int minute, int second)
+void Fact::setStartTime(int year, int month, int day, int hour, int minute, int second)
 {
 	// lever exception si bad params values ?
 
 	startTime.set(year, month, day, hour, minute, second);
 }
 
-void Event::setEndTime(int year, int month, int day, int hour, int minute, int second)
+void Fact::setEndTime(int year, int month, int day, int hour, int minute, int second)
 {
 	endTime.set(year, month, day, hour, minute, second);
 }
 
-void Event::setTitle(std::string text)
+void Fact::setTitle(std::string text)
 {
 	title = text;
 }
 
-void Event::setDescription(std::string text)
+void Fact::setDescription(std::string text)
 {
     description = text;
 }
 
 
-std::string Event::getText() const
+std::string Fact::getText() const
 {
 //	std::string ret;
 	char buf[2000];

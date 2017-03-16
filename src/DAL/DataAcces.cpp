@@ -31,10 +31,10 @@ DataAcces::~DataAcces(void)
 {
 }
 
-void DataAcces::getAllEvents(std::vector<Event*> * vecEvents)
+void DataAcces::getAllFacts(std::vector<Fact*> * vecFacts)
 {
 	sqlite3_stmt * statement;
-	const char * requete = "SELECT * FROM event";
+	const char * requete = "SELECT * FROM fact";
 	int ret = sqlite3_prepare_v2(db, requete, strlen(requete), &statement, NULL);
 	if (ret != SQLITE_OK) {
 		std::cerr<<"Error on slite3_prepare_v2"<<std::endl;
@@ -42,27 +42,27 @@ void DataAcces::getAllEvents(std::vector<Event*> * vecEvents)
 	}
 	
 	while (sqlite3_step(statement) == SQLITE_ROW){
-		Event * event = new Event;
-		databaseStatementToEvent(statement, event);
-		vecEvents->push_back(event);
+		Fact * fact = new Fact;
+		databaseStatementToFact(statement, fact);
+		vecFacts->push_back(fact);
 	}
 
     sqlite3_finalize(statement);
 }
 
-void DataAcces::getEvents(const TimeHour &begin, const TimeHour &end)
+void DataAcces::getFacts(const TimeHour &begin, const TimeHour &end)
 {
-    assert(false && "DataAcces::getEvents is not implemented.");
+    assert(false && "DataAcces::getFacts is not implemented.");
 }
 
-bool DataAcces::deleteEvent(const Event &)
+bool DataAcces::deleteFact(const Fact &)
 {
-    assert(false && "DataAcces::deleteEvent is not implemented.");
+    assert(false && "DataAcces::deleteFact is not implemented.");
 }
 
-void DataAcces::updateEvent(const Event &)
+void DataAcces::updateFact(const Fact &)
 {
-    assert(false && "DataAcces::updateEvent is not implemented.");
+    assert(false && "DataAcces::updateFact is not implemented.");
 }
 
 bool DataAcces::recreateDatabase()
@@ -74,7 +74,7 @@ bool DataAcces::recreateDatabase()
 
     sqlite3_stmt * statement;
 
-    const char * creationReq = "CREATE TABLE 'Event'('startTime' DateTime NOT NULL, 'endTime' DateTime NOT NULL)";
+    const char * creationReq = "CREATE TABLE 'Fact'('startTime' DateTime NOT NULL, 'endTime' DateTime NOT NULL)";
     //'title'	varchar(100),
     //'description'	varchar(1000),
     //'id'	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE
@@ -91,27 +91,27 @@ bool DataAcces::recreateDatabase()
     sqlite3_finalize(statement);
 }
 
-void DataAcces::insertEvent(Event * newEvent)
+void DataAcces::insertFact(Fact * newFact)
 {
-	std::cout<<"insertEvent"<<std::endl;
-    std::cout<<newEvent->getStartTime().toString();
+	std::cout<<"insertFact"<<std::endl;
+    std::cout<<newFact->getStartTime().toString();
 
 	sqlite3_stmt * statement;
 
     char insertReq[256];
-    sprintf(insertReq, "INSERT INTO %s (%s, %s, %s, %s) VALUES (?, ?, ?, ?)", TABLE_EVENT, TABLE_EVENT_COLUMN_STARTTIME, TABLE_EVENT_COLUMN_ENDTIME, TABLE_EVENT_COLUMN_TITLE, TABLE_EVENT_COLUMN_DESCRIPTION);
+    sprintf(insertReq, "INSERT INTO %s (%s, %s, %s, %s) VALUES (?, ?, ?, ?)", TABLE_FACT, TABLE_FACT_COLUMN_STARTTIME, TABLE_FACT_COLUMN_ENDTIME, TABLE_FACT_COLUMN_TITLE, TABLE_FACT_COLUMN_DESCRIPTION);
     int rc = sqlite3_prepare_v2(db, insertReq, strlen(insertReq), &statement, NULL);
 
-    std::string param = newEvent->getStartTime().toString();
+    std::string param = newFact->getStartTime().toString();
     rc = sqlite3_bind_text(statement, 1, param.c_str(), param.size(), SQLITE_STATIC);
 
-    param = newEvent->getEndTime().toString();
+    param = newFact->getEndTime().toString();
     rc = sqlite3_bind_text(statement, 2, param.c_str(), param.size(), SQLITE_STATIC);
 
-    param = newEvent->getTitle();
+    param = newFact->getTitle();
     rc = sqlite3_bind_text(statement, 3, param.c_str(), param.size(), SQLITE_STATIC);
 
-    param = newEvent->getDescription();
+    param = newFact->getDescription();
     rc = sqlite3_bind_text(statement, 4, param.c_str(), param.size(), SQLITE_STATIC);
 	
     rc = sqlite3_step(statement);
@@ -120,14 +120,14 @@ void DataAcces::insertEvent(Event * newEvent)
 
     // retrieve new id field (auto increment) :
     char req[256];
-    sprintf(req, "SELECT seq FROM sqlite_sequence WHERE name='%s'", TABLE_EVENT);
+    sprintf(req, "SELECT seq FROM sqlite_sequence WHERE name='%s'", TABLE_FACT);
     rc = sqlite3_prepare_v2(db, req, strlen(req), &statement, NULL);
 
     rc = sqlite3_step(statement);
     if ( rc == SQLITE_ROW)
     {
         int val = sqlite3_column_int(statement, 0);
-        //newEvent->setId(val);
+        //newFact->setId(val);
         int stop = 0;
     }
 
@@ -135,55 +135,55 @@ void DataAcces::insertEvent(Event * newEvent)
 	
 }
 
-void DataAcces::databaseStatementToEvent(sqlite3_stmt * statement, Event * event)
+void DataAcces::databaseStatementToFact(sqlite3_stmt * statement, Fact * fact)
 {
 	int year, month, day, hour, minute, second;
 
-    const unsigned char * val = sqlite3_column_text(statement, Columns_Event_Table::idField);
+    const unsigned char * val = sqlite3_column_text(statement, Columns_Fact_Table::idField);
     if (val != 0){
         int id = 0;
-        std::cout<<"Field "<<Columns_Event_Table::idField<<" = "<<val<<std::endl;
+        std::cout<<"Field "<<Columns_Fact_Table::idField<<" = "<<val<<std::endl;
         sscanf((const char *)val, "%d", &id);
-        event->setId(id);
+        fact->setId(id);
     } else {
         std::cout<<"No value"<<std::endl;
     }
 
-    val = sqlite3_column_text(statement, Columns_Event_Table::startField);
+    val = sqlite3_column_text(statement, Columns_Fact_Table::startField);
 	if (val != 0){
-        std::cout<<"Field "<<Columns_Event_Table::startField<<" = "<<val<<std::endl;
+        std::cout<<"Field "<<Columns_Fact_Table::startField<<" = "<<val<<std::endl;
 		sscanf((const char *)val, "%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
-		event->setStartTime(year, month, day, hour, minute, second);
+		fact->setStartTime(year, month, day, hour, minute, second);
 	} else {
 		std::cout<<"No value"<<std::endl;
 	}
 
-    val = sqlite3_column_text(statement, Columns_Event_Table::endField);
+    val = sqlite3_column_text(statement, Columns_Fact_Table::endField);
 	if (val != 0){
-        std::cout<<"Field "<<Columns_Event_Table::endField<<" = "<<val<<std::endl;
+        std::cout<<"Field "<<Columns_Fact_Table::endField<<" = "<<val<<std::endl;
 		sscanf((const char *)val, "%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
-		event->setEndTime(year, month, day, hour, minute, second);
+		fact->setEndTime(year, month, day, hour, minute, second);
 	} else {
 		std::cout<<"No value"<<std::endl;
 	}
 
-    val = sqlite3_column_text(statement, Columns_Event_Table::titleField);
+    val = sqlite3_column_text(statement, Columns_Fact_Table::titleField);
     if (val != 0){
-        std::cout<<"Field "<<Columns_Event_Table::titleField<<" = "<<val<<std::endl;
+        std::cout<<"Field "<<Columns_Fact_Table::titleField<<" = "<<val<<std::endl;
         //sscanf((const char*)val, "%s")
-        event->setTitle((const char*)val);
+        fact->setTitle((const char*)val);
     }
 
-    val = sqlite3_column_text(statement, Columns_Event_Table::descriptionField);
+    val = sqlite3_column_text(statement, Columns_Fact_Table::descriptionField);
     if (val != 0){
-        std::cout<<"Field "<<Columns_Event_Table::descriptionField<<" = "<<val<<std::endl;
+        std::cout<<"Field "<<Columns_Fact_Table::descriptionField<<" = "<<val<<std::endl;
         //sscanf((const char*)val, "%s")
-        event->setDescription((const char*)val);
+        fact->setDescription((const char*)val);
     }
 
 /*	
-	event->setTitle(std::string((const char*)sqlite3_column_text(statement, 2)));
-	event->setDescription(std::string((const char*)sqlite3_column_text(statement, 3)));
+	fact->setTitle(std::string((const char*)sqlite3_column_text(statement, 2)));
+	fact->setDescription(std::string((const char*)sqlite3_column_text(statement, 3)));
 */
 }
 
