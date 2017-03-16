@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui quick
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -14,16 +14,16 @@ TEMPLATE = app
 INCLUDEPATH += ../../..
 
 SOURCES += main.cpp\
-        mainwindow.cpp \
     ../../../DAL/DataAcces.cpp \
     ../../../DAL/sqlite3.c \
     ../../../POCO/Event.cpp \
-    ../../../POCO/TimeHour.cpp
+    ../../../POCO/TimeHour.cpp \
 
-HEADERS  += mainwindow.h \
-    ../../../DAL/DataAcces.h \
+HEADERS  += ../../../DAL/DataAcces.h \
     ../../../DAL/sqlite3.h \
     ../../../POCO/Event.h \
     ../../../POCO/TimeHour.h
 
-FORMS    += mainwindow.ui
+DISTFILES += \
+    Test.qml \
+    Test.qmlc
