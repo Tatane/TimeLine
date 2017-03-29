@@ -18,12 +18,15 @@ SOURCES += main.cpp\
     ../../../DAL/sqlite3.c \
     ../../../POCO/Fact.cpp \
     ../../../POCO/TimeHour.cpp \
+    mainwin.cpp \
+    facttablemodel.cpp
 
 HEADERS  += ../../../DAL/DataAcces.h \
     ../../../DAL/sqlite3.h \
     ../../../POCO/Fact.h \
-    ../../../POCO/TimeHour.h
+    ../../../POCO/TimeHour.h \
+    mainwin.h \
+    facttablemodel.h
 
-DISTFILES += \
-    Test.qml \
-    Test.qmlc
+FORMS += \
+    mainwin.ui

@@ -1,13 +1,17 @@
 #include <QApplication>
+/*
 #include <QtQuick/QQuickView>
+#include <QtQuick/QQuickItem>
+#include <QtQml/QQmlProperty>
+*/
+#include "mainwin.h"
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
 
-    QQuickView view;
-    view.setSource(QUrl::fromLocalFile("../TimeLine/Test.qml"));
-    view.show();
+    MainWin mainWin;
+    mainWin.show();
 
-    return a.exec();
+    return app.exec();
 }
