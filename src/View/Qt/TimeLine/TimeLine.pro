@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui quick
+QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,15 +18,19 @@ SOURCES += main.cpp\
     ../../../DAL/sqlite3.c \
     ../../../POCO/Fact.cpp \
     ../../../POCO/TimeHour.cpp \
-    mainwin.cpp \
-    facttablemodel.cpp
+    MainWin.cpp \
+    FactTableModel.cpp \
+    FactDialog.cpp
 
 HEADERS  += ../../../DAL/DataAcces.h \
     ../../../DAL/sqlite3.h \
     ../../../POCO/Fact.h \
     ../../../POCO/TimeHour.h \
-    mainwin.h \
-    facttablemodel.h
+    MainWin.h \
+    FactTableModel.h \
+    FactDialog.h
 
 FORMS += \
-    mainwin.ui
+    MainWin.ui \
+    FactDialog.ui
+

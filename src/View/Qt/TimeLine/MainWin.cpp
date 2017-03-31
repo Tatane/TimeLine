@@ -3,15 +3,17 @@
 
 #include <QMessageBox>
 #include "DAL/DataAcces.h"
+#include "FactTableModel.h"
+#include "FactDialog.h"
 
 MainWin::MainWin(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::MainWin),
-    model(0)
+    ui(new Ui::MainWin)
 {
     ui->setupUi(this);
 
     connect(ui->btnQuit, SIGNAL(clicked(bool)), this, SLOT(onBtnQuitClicked()));
+    connect(ui->btnAddFact, SIGNAL(clicked(bool)), this, SLOT(onBtnAddFact()));
 
     displayFacts();
 }
@@ -26,17 +28,7 @@ void MainWin::displayFacts()
     // read from database
     DataAcces::getInstance()->getAllFacts(&vecFacts);
 
-    model = new FactTableModel(&vecFacts);
-
-    ui->tableView->setModel(model);
-/*
-    // put the Facts in the view
-    std::vector<Fact*>::const_iterator it;
-    for(it=vecFacts.begin(); it != vecFacts.end(); ++it) {
-
-
-    }
-    */
+    ui->tableView->setModel(new FactTableModel(&vecFacts));
 }
 
 void MainWin::onBtnQuitClicked()
@@ -49,4 +41,11 @@ void MainWin::onBtnQuitClicked()
     if (msg.exec() == QMessageBox::Yes) {
         exit(0);
     }
+}
+
+void MainWin::onBtnAddFact()
+{
+    // Open Fact dialog.
+    FactDialog factDialog;
+    factDialog.exec();
 }

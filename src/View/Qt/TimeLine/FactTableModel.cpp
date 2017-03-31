@@ -19,6 +19,10 @@ int FactTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant FactTableModel::data(const QModelIndex &index, int role) const
 {
+    if (role != Qt::DisplayRole) {
+        return QVariant();
+    }
+
     Fact* fact = vecFacts->at(index.row());
 
     switch (index.column()) {
