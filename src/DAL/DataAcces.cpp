@@ -9,9 +9,9 @@ DataAcces * DataAcces::instance = NULL;
 
 DataAcces::DataAcces(void)
 {
-	if (sqlite3_open("maBDD", &db) != SQLITE_OK)
+    if (sqlite3_open_v2("maBDD", &db, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
 	{
-		std::cerr<<sqlite3_errmsg(db)<<std::endl;
+        std::cerr<<sqlite3_errmsg(db)<<std::endl;
 	} else {
 		std::cout<<"Database opened"<<std::endl;
 	}
@@ -33,19 +33,19 @@ DataAcces::~DataAcces(void)
 
 void DataAcces::getAllFacts(std::vector<Fact*> * vecFacts)
 {
-	sqlite3_stmt * statement;
-	const char * requete = "SELECT * FROM fact";
-	int ret = sqlite3_prepare_v2(db, requete, strlen(requete), &statement, NULL);
-	if (ret != SQLITE_OK) {
-		std::cerr<<"Error on slite3_prepare_v2"<<std::endl;
-		exit(-1);
-	}
-	
-	while (sqlite3_step(statement) == SQLITE_ROW){
-		Fact * fact = new Fact;
-		databaseStatementToFact(statement, fact);
-		vecFacts->push_back(fact);
-	}
+    sqlite3_stmt * statement;
+    const char * requete = "SELECT * FROM fact";
+    int ret = sqlite3_prepare_v2(db, requete, strlen(requete), &statement, NULL);
+    if (ret != SQLITE_OK) {
+        std::cerr<<"Error on slite3_prepare_v2"<<std::endl;
+        exit(-1);
+    }
+
+    while (sqlite3_step(statement) == SQLITE_ROW){
+        Fact * fact = new Fact;
+        databaseStatementToFact(statement, fact);
+        vecFacts->push_back(fact);
+    }
 
     sqlite3_finalize(statement);
 }
