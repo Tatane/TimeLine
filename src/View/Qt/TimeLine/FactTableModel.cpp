@@ -39,3 +39,9 @@ QVariant FactTableModel::data(const QModelIndex &index, int role) const
 
 
 }
+
+void FactTableModel::rowAppened()
+{
+    beginInsertRows(QModelIndex(), vecFacts->size()-1, vecFacts->size()-1);
+    endInsertRows();
+}

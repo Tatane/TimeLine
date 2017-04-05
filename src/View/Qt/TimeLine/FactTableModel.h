@@ -15,8 +15,11 @@ public:
     int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
 
+    void rowAppened();
+
 private:
     std::vector<Fact*> * vecFacts;
+
 };
 
 #endif // FACTTABLEMODEL_H

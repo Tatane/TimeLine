@@ -8,6 +8,7 @@
 
 MainWin::MainWin(QWidget *parent) :
     QDialog(parent),
+    factTableModel(&vecFacts),
     ui(new Ui::MainWin)
 {
     ui->setupUi(this);
@@ -28,7 +29,7 @@ void MainWin::displayFacts()
     // read from database
     DataAcces::getInstance()->getAllFacts(&vecFacts);
 
-    ui->tableView->setModel(new FactTableModel(&vecFacts));
+    ui->tableView->setModel(&factTableModel);
 }
 
 void MainWin::onBtnQuitClicked()
@@ -46,6 +47,15 @@ void MainWin::onBtnQuitClicked()
 void MainWin::onBtnAddFact()
 {
     // Open Fact dialog.
-    FactDialog factDialog;
-    factDialog.exec();
+    Fact * newFact = NULL;
+    Fact ** pFact = &newFact;
+    FactDialog factDialog(pFact);
+    int ret = factDialog.exec();
+    if (ret == QDialog::Accepted && *pFact != NULL) {
+        vecFacts.push_back(*pFact);
+
+        factTableModel.rowAppened();
+        ui->tableView->selectRow(vecFacts.size()-1);
+    }
+
 }

@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include "POCO/Fact.h"
+#include "FactTableModel.h"
 
 namespace Ui {
 class MainWin;
@@ -23,6 +24,7 @@ public:
 private:
     Ui::MainWin *ui;
     std::vector<Fact*> vecFacts;
+    FactTableModel factTableModel;
 
     void displayFacts();
 

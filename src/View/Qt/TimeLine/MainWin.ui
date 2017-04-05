@@ -15,20 +15,7 @@
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
-    <widget class="QTableView" name="tableView">
-     <property name="cornerButtonEnabled">
-      <bool>true</bool>
-     </property>
-     <attribute name="horizontalHeaderVisible">
-      <bool>true</bool>
-     </attribute>
-     <attribute name="horizontalHeaderCascadingSectionResizes">
-      <bool>true</bool>
-     </attribute>
-     <attribute name="horizontalHeaderStretchLastSection">
-      <bool>true</bool>
-     </attribute>
-    </widget>
+    <widget class="QTableView" name="tableView"/>
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
