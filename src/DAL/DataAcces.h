@@ -2,6 +2,7 @@
 #define DATAACCES_H
 
 #include <vector>
+#include <map>
 #include "POCO/Fact.h"
 #include "sqlite3.h"
 
@@ -23,7 +24,7 @@ public:
 	static DataAcces * instance;
 	~DataAcces(void);
 
-	void getAllFacts(std::vector<Fact*> * vecFacts);
+    void getAllFacts(std::vector<Fact*> * vecFacts);
     void getFacts(const TimeHour & begin, const TimeHour & end);
     void insertFact(Fact & newFact);
     bool deleteFact(const Fact &);

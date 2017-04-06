@@ -55,9 +55,25 @@ void DataAcces::getFacts(const TimeHour &begin, const TimeHour &end)
     assert(false && "DataAcces::getFacts is not implemented.");
 }
 
-bool DataAcces::deleteFact(const Fact &)
+bool DataAcces::deleteFact(const Fact & factToDelete)
 {
-    assert(false && "DataAcces::deleteFact is not implemented.");
+    sqlite3_stmt * statement;
+    const char * requete = "DELETE FROM fact WHERE id=?";
+    int ret = sqlite3_prepare_v2(db, requete, strlen(requete), &statement, NULL);
+    if (ret != SQLITE_OK) {
+        std::cerr<<"Error on slite3_prepare_v2"<<std::endl;
+        exit(-1);
+    } else {
+        if (sqlite3_bind_int(statement, 1, factToDelete.getId()) == SQLITE_OK) {
+            sqlite3_step(statement);
+            sqlite3_finalize(statement);
+            return true;
+        } else {
+            std::cerr<<"Error on sqlite3_bind_int"<<std::endl;
+            exit(-1);
+        }
+    }
+    return false;
 }
 
 void DataAcces::updateFact(const Fact &)
@@ -89,6 +105,8 @@ bool DataAcces::recreateDatabase()
     sqlite3_step(statement);
 
     sqlite3_finalize(statement);
+
+    return false;
 }
 
 void DataAcces::insertFact(Fact & newFact)
@@ -127,8 +145,7 @@ void DataAcces::insertFact(Fact & newFact)
     if ( rc == SQLITE_ROW)
     {
         int val = sqlite3_column_int(statement, 0);
-        //newFact.setId(val);
-        int stop = 0;
+        newFact.setId(val);
     }
 
     rc = sqlite3_finalize(statement);
@@ -180,10 +197,5 @@ void DataAcces::databaseStatementToFact(sqlite3_stmt * statement, Fact * fact)
         //sscanf((const char*)val, "%s")
         fact->setDescription((const char*)val);
     }
-
-/*	
-	fact->setTitle(std::string((const char*)sqlite3_column_text(statement, 2)));
-	fact->setDescription(std::string((const char*)sqlite3_column_text(statement, 3)));
-*/
 }
 

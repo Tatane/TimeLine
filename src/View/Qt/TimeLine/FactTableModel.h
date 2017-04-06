@@ -8,6 +8,7 @@ class FactTableModel : public QAbstractTableModel
 {
 public:
     FactTableModel(std::vector<Fact*> * vecFacts);
+    FactTableModel(std::map<int, Fact*> * mapFacts);
 
     // QAbstractItemModel interface
 public:
@@ -16,9 +17,11 @@ public:
     QVariant data(const QModelIndex &index, int role) const;
 
     void rowAppened();
+    void rowRemoved(int row);
 
 private:
     std::vector<Fact*> * vecFacts;
+    std::map<int, Fact*> * mapFacts;
 
 };
 

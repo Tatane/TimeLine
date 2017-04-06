@@ -6,10 +6,16 @@ FactTableModel::FactTableModel(std::vector<Fact*> * vec)
 
 }
 
+FactTableModel::FactTableModel(std::map<int, Fact*> * map)
+    : mapFacts(map)
+{
+
+}
 
 int FactTableModel::rowCount(const QModelIndex &parent) const
 {
     return vecFacts->size();
+    //return mapFacts->size();
 }
 
 int FactTableModel::columnCount(const QModelIndex &parent) const
@@ -27,9 +33,12 @@ QVariant FactTableModel::data(const QModelIndex &index, int role) const
 
     switch (index.column()) {
     case 0:
-        return QVariant(fact->getDescription().c_str());
+        return QVariant(fact->getId());
         break;
     case 1:
+        return QVariant(fact->getDescription().c_str());
+        break;
+    case 2:
         return QVariant(fact->getStartTime().toString().c_str());
         break;
     default:
@@ -44,4 +53,10 @@ void FactTableModel::rowAppened()
 {
     beginInsertRows(QModelIndex(), vecFacts->size()-1, vecFacts->size()-1);
     endInsertRows();
+}
+
+void FactTableModel::rowRemoved(int row)
+{
+    beginRemoveRows(QModelIndex(), row, row);
+    endRemoveRows();
 }

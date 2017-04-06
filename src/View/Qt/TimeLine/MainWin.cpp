@@ -5,6 +5,7 @@
 #include "DAL/DataAcces.h"
 #include "FactTableModel.h"
 #include "FactDialog.h"
+#include <algorithm>
 
 MainWin::MainWin(QWidget *parent) :
     QDialog(parent),
@@ -15,6 +16,7 @@ MainWin::MainWin(QWidget *parent) :
 
     connect(ui->btnQuit, SIGNAL(clicked(bool)), this, SLOT(onBtnQuitClicked()));
     connect(ui->btnAddFact, SIGNAL(clicked(bool)), this, SLOT(onBtnAddFact()));
+    connect(ui->btnRemoveFact, SIGNAL(clicked(bool)), this, SLOT(onBtnRemoveFact()));
 
     displayFacts();
 }
@@ -57,5 +59,30 @@ void MainWin::onBtnAddFact()
         factTableModel.rowAppened();
         ui->tableView->selectRow(vecFacts.size()-1);
     }
+}
 
+void MainWin::onBtnRemoveFact()
+{
+    QMessageBox msg;
+    msg.setText("Permanently remove selected rows ?");
+    msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msg.setDefaultButton(QMessageBox::Cancel);
+    if (msg.exec() == QMessageBox::Ok) {
+
+        QModelIndexList selectedRowsIndexes = ui->tableView->selectionModel()->selectedRows();
+        std::vector<int> selectedRows;
+        foreach (QModelIndex index, selectedRowsIndexes) {
+            selectedRows.push_back(index.row());
+        }
+        // Sort descending, because deleting a row will shift indexes of nexts rows. So we want to start to delete from the end.
+        std::sort(selectedRows.begin(), selectedRows.end(), std::greater<int>());
+
+        foreach (int row, selectedRows) {
+            DataAcces::getInstance()->deleteFact(*(vecFacts[row])); // delete from the database.
+            factTableModel.rowRemoved(row); // remove the row from the table.
+            delete vecFacts[row];   // delete the instance.
+            vecFacts.erase(vecFacts.begin()+row); // remove from the container.
+        }
+
+    }
 }

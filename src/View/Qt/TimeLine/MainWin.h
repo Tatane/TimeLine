@@ -16,6 +16,7 @@ class MainWin : public QDialog
 private slots:
     void onBtnQuitClicked();
     void onBtnAddFact();
+    void onBtnRemoveFact();
 
 public:
     explicit MainWin(QWidget *parent = 0);
