@@ -25,6 +25,9 @@
      <property name="selectionBehavior">
       <enum>QAbstractItemView::SelectRows</enum>
      </property>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
     </widget>
    </item>
    <item>
@@ -32,14 +35,21 @@
      <item>
       <widget class="QPushButton" name="btnAddFact">
        <property name="text">
-        <string>Add Fact</string>
+        <string>Add</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="btnRemoveFact">
        <property name="text">
-        <string>Remove Fact</string>
+        <string>Remove</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="btnEditFact">
+       <property name="text">
+        <string>Edit</string>
        </property>
       </widget>
      </item>

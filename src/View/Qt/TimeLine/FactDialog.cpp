@@ -6,7 +6,6 @@
 FactDialog::FactDialog(Fact **fact, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::FactDialog),
-    //editedFact(fact),
     pEditedFact(fact)
 {
     ui->setupUi(this);
@@ -16,13 +15,38 @@ FactDialog::FactDialog(Fact **fact, QWidget *parent) :
     connect(ui->chkAllDayStartTime, SIGNAL(toggled(bool)), ui->startTimeEdit, SLOT(setDisabled(bool)));
     connect(ui->chkAllDayEndTime, SIGNAL(toggled(bool)), ui->endTimeEdit, SLOT(setDisabled(bool)));
 
-    ui->startDateEdit->setDateTime(QDateTime::currentDateTime());
-    ui->endDateEdit->setDateTime(QDateTime::currentDateTime());
+    initializeFields();
+
+
+
+
 }
 
 FactDialog::~FactDialog()
 {
     delete ui;
+}
+
+void FactDialog::initializeFields()
+{
+    if (*pEditedFact != NULL) {
+        Fact * fact = *pEditedFact;
+        ui->lineEditTitle->setText(QString::fromStdString(fact->getTitle()));
+        ui->textEditDescription->setText(QString::fromStdString(fact->getDescription()));
+        QDate date(fact->getStartTime().get().tm_year + 1900, fact->getStartTime().get().tm_mon + 1, fact->getStartTime().get().tm_mday);
+        ui->startDateEdit->setDate(date);
+
+        date = QDate(fact->getEndTime().get().tm_year + 1900, fact->getEndTime().get().tm_mon + 1, fact->getEndTime().get().tm_mday);
+        ui->endDateEdit->setDate(date);
+
+        ui->startTimeEdit->setTime(QTime(fact->getStartTime().get().tm_hour, fact->getStartTime().get().tm_min, fact->getStartTime().get().tm_sec));
+
+        ui->endTimeEdit->setTime(QTime(fact->getEndTime().get().tm_hour, fact->getEndTime().get().tm_min, fact->getEndTime().get().tm_sec));
+
+    } else {
+        ui->startDateEdit->setDateTime(QDateTime::currentDateTime());
+        ui->endDateEdit->setDateTime(QDateTime::currentDateTime());
+    }
 }
 
 void FactDialog::onBtnCancel()

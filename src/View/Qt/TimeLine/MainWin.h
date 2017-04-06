@@ -14,9 +14,10 @@ class MainWin : public QDialog
     Q_OBJECT
 
 private slots:
-    void onBtnQuitClicked();
+    void onBtnQuit();
     void onBtnAddFact();
     void onBtnRemoveFact();
+    void onBtnEditFact();
 
 public:
     explicit MainWin(QWidget *parent = 0);

@@ -28,7 +28,7 @@ public:
     void getFacts(const TimeHour & begin, const TimeHour & end);
     void insertFact(Fact & newFact);
     bool deleteFact(const Fact &);
-    void updateFact(const Fact &);
+    bool updateFact(const Fact &);
     bool recreateDatabase() ;
 
     struct Columns_Fact_Table{

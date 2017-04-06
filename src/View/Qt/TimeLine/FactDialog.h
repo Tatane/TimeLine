@@ -18,8 +18,9 @@ public:
 
 private:
     Ui::FactDialog *ui;
-    Fact * editedFact;
     Fact ** pEditedFact;
+
+    void initializeFields();
 
 private slots:
     void onBtnCancel();

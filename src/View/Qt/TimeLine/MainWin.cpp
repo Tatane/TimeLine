@@ -14,9 +14,10 @@ MainWin::MainWin(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->btnQuit, SIGNAL(clicked(bool)), this, SLOT(onBtnQuitClicked()));
+    connect(ui->btnQuit, SIGNAL(clicked(bool)), this, SLOT(onBtnQuit()));
     connect(ui->btnAddFact, SIGNAL(clicked(bool)), this, SLOT(onBtnAddFact()));
     connect(ui->btnRemoveFact, SIGNAL(clicked(bool)), this, SLOT(onBtnRemoveFact()));
+    connect(ui->btnEditFact, SIGNAL(clicked(bool)), this, SLOT(onBtnEditFact()));
 
     displayFacts();
 }
@@ -34,10 +35,11 @@ void MainWin::displayFacts()
     ui->tableView->setModel(&factTableModel);
 }
 
-void MainWin::onBtnQuitClicked()
+void MainWin::onBtnQuit()
 {
     QMessageBox msg;
     msg.setText(tr("Do you want to quit ?"));
+    msg.setIcon(QMessageBox::Question);
     msg.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
     msg.setDefaultButton(QMessageBox::Yes);
 
@@ -65,6 +67,7 @@ void MainWin::onBtnRemoveFact()
 {
     QMessageBox msg;
     msg.setText("Permanently remove selected rows ?");
+    msg.setIcon(QMessageBox::Question);
     msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
     msg.setDefaultButton(QMessageBox::Cancel);
     if (msg.exec() == QMessageBox::Ok) {
@@ -84,5 +87,23 @@ void MainWin::onBtnRemoveFact()
             vecFacts.erase(vecFacts.begin()+row); // remove from the container.
         }
 
+    }
+}
+
+void MainWin::onBtnEditFact()
+{
+    QModelIndexList selectedRowsIndexes = ui->tableView->selectionModel()->selectedRows();
+    if (selectedRowsIndexes.size() != 1) {
+        QMessageBox msg;
+        msg.setText("Select one, and only one row.");
+        msg.setIcon(QMessageBox::Information);
+        msg.exec();
+        return;
+    } else {
+        Fact* fact = vecFacts[selectedRowsIndexes.first().row()];
+        if (fact != NULL) {
+            FactDialog factDialog(&fact);
+            factDialog.exec();
+        }
     }
 }

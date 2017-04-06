@@ -20,7 +20,7 @@ int FactTableModel::rowCount(const QModelIndex &parent) const
 
 int FactTableModel::columnCount(const QModelIndex &parent) const
 {
-    return 3;
+    return 4;
 }
 
 QVariant FactTableModel::data(const QModelIndex &index, int role) const
@@ -32,14 +32,18 @@ QVariant FactTableModel::data(const QModelIndex &index, int role) const
     Fact* fact = vecFacts->at(index.row());
 
     switch (index.column()) {
+
     case 0:
-        return QVariant(fact->getId());
+        return QVariant(fact->getStartTime().toString().c_str());
         break;
     case 1:
-        return QVariant(fact->getDescription().c_str());
+        return QVariant(fact->getEndTime().toString().c_str());
         break;
     case 2:
-        return QVariant(fact->getStartTime().toString().c_str());
+        return QVariant(fact->getTitle().c_str());
+        break;
+    case 3:
+        return QVariant(fact->getDescription().c_str());
         break;
     default:
         return QVariant();

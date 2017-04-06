@@ -76,9 +76,43 @@ bool DataAcces::deleteFact(const Fact & factToDelete)
     return false;
 }
 
-void DataAcces::updateFact(const Fact &)
+bool DataAcces::updateFact(const Fact & factToUpdate)
 {
-    assert(false && "DataAcces::updateFact is not implemented.");
+    if (factToUpdate.getId() > 0) {
+
+        sqlite3_stmt * statement;
+
+        char requete[256];
+        sprintf(requete, "UPDATE %s SET %s=?, %s=?, %s=?, %s=? WHERE id=?", TABLE_FACT, TABLE_FACT_COLUMN_STARTTIME, TABLE_FACT_COLUMN_ENDTIME, TABLE_FACT_COLUMN_TITLE, TABLE_FACT_COLUMN_DESCRIPTION);
+
+        int ret = sqlite3_prepare_v2(db, requete, strlen(requete), &statement, NULL);
+        if (ret != SQLITE_OK) {
+            std::cerr<<"Error on slite3_prepare_v2"<<std::endl;
+            exit(-1);
+        } else {
+            std::string paramStartTime = factToUpdate.getStartTime().toString();
+            int rc = sqlite3_bind_text(statement, 1, paramStartTime.c_str(), paramStartTime.size(), SQLITE_STATIC);
+
+            std::string paramEndtTime = factToUpdate.getEndTime().toString();
+            rc = sqlite3_bind_text(statement, 2, paramEndtTime.c_str(), paramEndtTime.size(), SQLITE_STATIC);
+
+            std::string paramTitle = factToUpdate.getTitle();
+            rc = sqlite3_bind_text(statement, 3, paramTitle.c_str(), paramTitle.size(), SQLITE_STATIC);
+
+            std::string paramDescription = factToUpdate.getDescription();
+            rc = sqlite3_bind_text(statement, 4, paramDescription.c_str(), paramDescription.size(), SQLITE_STATIC);
+
+            rc = sqlite3_bind_int(statement, 5, factToUpdate.getId());
+
+            rc = sqlite3_step(statement);
+
+            rc = sqlite3_finalize(statement);
+
+            return true;
+        }
+    }
+    return false;
+
 }
 
 bool DataAcces::recreateDatabase()
@@ -120,17 +154,17 @@ void DataAcces::insertFact(Fact & newFact)
     sprintf(insertReq, "INSERT INTO %s (%s, %s, %s, %s) VALUES (?, ?, ?, ?)", TABLE_FACT, TABLE_FACT_COLUMN_STARTTIME, TABLE_FACT_COLUMN_ENDTIME, TABLE_FACT_COLUMN_TITLE, TABLE_FACT_COLUMN_DESCRIPTION);
     int rc = sqlite3_prepare_v2(db, insertReq, strlen(insertReq), &statement, NULL);
 
-    std::string param = newFact.getStartTime().toString();
-    rc = sqlite3_bind_text(statement, 1, param.c_str(), param.size(), SQLITE_STATIC);
+    std::string paramStartTime = newFact.getStartTime().toString();
+    rc = sqlite3_bind_text(statement, 1, paramStartTime.c_str(), paramStartTime.size(), SQLITE_STATIC);
 
-    param = newFact.getEndTime().toString();
-    rc = sqlite3_bind_text(statement, 2, param.c_str(), param.size(), SQLITE_STATIC);
+    std::string paramEndtTime = newFact.getEndTime().toString();
+    rc = sqlite3_bind_text(statement, 2, paramEndtTime.c_str(), paramEndtTime.size(), SQLITE_STATIC);
 
-    param = newFact.getTitle();
-    rc = sqlite3_bind_text(statement, 3, param.c_str(), param.size(), SQLITE_STATIC);
+    std::string paramTitle = newFact.getTitle();
+    rc = sqlite3_bind_text(statement, 3, paramTitle.c_str(), paramTitle.size(), SQLITE_STATIC);
 
-    param = newFact.getDescription();
-    rc = sqlite3_bind_text(statement, 4, param.c_str(), param.size(), SQLITE_STATIC);
+    std::string paramDescription = newFact.getDescription();
+    rc = sqlite3_bind_text(statement, 4, paramDescription.c_str(), paramDescription.size(), SQLITE_STATIC);
 	
     rc = sqlite3_step(statement);
 
