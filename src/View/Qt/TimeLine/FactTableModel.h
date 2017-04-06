@@ -15,6 +15,7 @@ public:
     int rowCount(const QModelIndex &parent) const;
     int columnCount(const QModelIndex &parent) const;
     QVariant data(const QModelIndex &index, int role) const;
+    QVariant headerData(int section, Qt::Orientation orientation, int role) const;
 
     void rowAppened();
     void rowRemoved(int row);
@@ -22,7 +23,6 @@ public:
 private:
     std::vector<Fact*> * vecFacts;
     std::map<int, Fact*> * mapFacts;
-
 };
 
 #endif // FACTTABLEMODEL_H

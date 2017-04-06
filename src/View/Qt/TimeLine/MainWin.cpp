@@ -6,6 +6,7 @@
 #include "FactTableModel.h"
 #include "FactDialog.h"
 #include <algorithm>
+#include <QSortFilterProxyModel>
 
 MainWin::MainWin(QWidget *parent) :
     QDialog(parent),
@@ -32,7 +33,9 @@ void MainWin::displayFacts()
     // read from database
     DataAcces::getInstance()->getAllFacts(&vecFacts);
 
-    ui->tableView->setModel(&factTableModel);
+    proxyModel.setSourceModel(&factTableModel);
+
+    ui->tableView->setModel(&proxyModel);
 }
 
 void MainWin::onBtnQuit()
@@ -75,6 +78,7 @@ void MainWin::onBtnRemoveFact()
         QModelIndexList selectedRowsIndexes = ui->tableView->selectionModel()->selectedRows();
         std::vector<int> selectedRows;
         foreach (QModelIndex index, selectedRowsIndexes) {
+            index = proxyModel.mapToSource(index);
             selectedRows.push_back(index.row());
         }
         // Sort descending, because deleting a row will shift indexes of nexts rows. So we want to start to delete from the end.
@@ -100,7 +104,8 @@ void MainWin::onBtnEditFact()
         msg.exec();
         return;
     } else {
-        Fact* fact = vecFacts[selectedRowsIndexes.first().row()];
+        QModelIndex index = proxyModel.mapToSource(selectedRowsIndexes.first());
+        Fact* fact = vecFacts[index.row()];
         if (fact != NULL) {
             FactDialog factDialog(&fact);
             factDialog.exec();

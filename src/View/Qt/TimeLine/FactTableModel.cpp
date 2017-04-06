@@ -1,4 +1,5 @@
 #include "facttablemodel.h"
+#include <QFont>
 
 FactTableModel::FactTableModel(std::vector<Fact*> * vec)
     : vecFacts(vec)
@@ -49,8 +50,6 @@ QVariant FactTableModel::data(const QModelIndex &index, int role) const
         return QVariant();
         break;
     }
-
-
 }
 
 void FactTableModel::rowAppened()
@@ -63,4 +62,39 @@ void FactTableModel::rowRemoved(int row)
 {
     beginRemoveRows(QModelIndex(), row, row);
     endRemoveRows();
+}
+
+
+QVariant FactTableModel::headerData(int section, Qt::Orientation orientation, int role) const
+{
+
+    if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
+        switch (section) {
+
+        case 0:
+            return QVariant("START");
+            break;
+        case 1:
+            return QVariant("END");
+            break;
+        case 2:
+            return QVariant("TITLE");
+            break;
+        case 3:
+            return QVariant("DESCRIPTION");
+            break;
+        default:
+            return QVariant();
+            break;
+        }
+    }
+
+    if (role == Qt::FontRole) {
+        QFont font;
+        font.setBold(true);
+        font.setUnderline(true);
+        return QVariant(font);
+    }
+
+    return QVariant();
 }
