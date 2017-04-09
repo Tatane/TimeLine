@@ -9,9 +9,10 @@ DataAcces * DataAcces::instance = NULL;
 
 DataAcces::DataAcces(void)
 {
-    if (sqlite3_open_v2("maBDD", &db, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
+    if (sqlite3_open_v2("../maBDD", &db, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
 	{
         std::cerr<<sqlite3_errmsg(db)<<std::endl;
+        exit(-1);
 	} else {
 		std::cout<<"Database opened"<<std::endl;
 	}

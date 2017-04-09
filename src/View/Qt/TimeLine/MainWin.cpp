@@ -34,7 +34,6 @@ void MainWin::displayFacts()
     DataAcces::getInstance()->getAllFacts(&vecFacts);
 
     proxyModel.setSourceModel(&factTableModel);
-
     ui->tableView->setModel(&proxyModel);
 }
 

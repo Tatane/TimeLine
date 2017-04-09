@@ -4,6 +4,7 @@
 #include <QAbstractTableModel>
 #include <POCO/Fact.h>
 
+
 class FactTableModel : public QAbstractTableModel
 {
 public:

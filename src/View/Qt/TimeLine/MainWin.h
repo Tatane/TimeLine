@@ -4,7 +4,8 @@
 #include <QDialog>
 #include "POCO/Fact.h"
 #include "FactTableModel.h"
-#include <QSortFilterProxyModel>
+//#include <QSortFilterProxyModel>
+#include "MySortFilterProxyModel.h"
 
 namespace Ui {
 class MainWin;
@@ -28,7 +29,7 @@ private:
     Ui::MainWin *ui;
     std::vector<Fact*> vecFacts;
     FactTableModel factTableModel;
-    QSortFilterProxyModel proxyModel;
+    MySortFilterProxyModel proxyModel;
 
     void displayFacts();
 

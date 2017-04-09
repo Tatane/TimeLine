@@ -20,7 +20,8 @@ SOURCES += main.cpp\
     ../../../POCO/TimeHour.cpp \
     MainWin.cpp \
     FactTableModel.cpp \
-    FactDialog.cpp
+    FactDialog.cpp \
+    MySortFilterProxyModel.cpp
 
 HEADERS  += ../../../DAL/DataAcces.h \
     ../../../DAL/sqlite3.h \
@@ -28,7 +29,8 @@ HEADERS  += ../../../DAL/DataAcces.h \
     ../../../POCO/TimeHour.h \
     MainWin.h \
     FactTableModel.h \
-    FactDialog.h
+    FactDialog.h \
+    MySortFilterProxyModel.h
 
 FORMS += \
     MainWin.ui \
