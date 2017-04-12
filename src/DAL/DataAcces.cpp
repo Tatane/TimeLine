@@ -32,7 +32,7 @@ DataAcces::~DataAcces(void)
 {
 }
 
-void DataAcces::getAllFacts(std::vector<Fact*> * vecFacts)
+void DataAcces::getAllFacts(std::vector<Fact*> & vecFacts)
 {
     sqlite3_stmt * statement;
     const char * requete = "SELECT * FROM fact";
@@ -45,7 +45,7 @@ void DataAcces::getAllFacts(std::vector<Fact*> * vecFacts)
     while (sqlite3_step(statement) == SQLITE_ROW){
         Fact * fact = new Fact;
         databaseStatementToFact(statement, fact);
-        vecFacts->push_back(fact);
+        vecFacts.push_back(fact);
     }
 
     sqlite3_finalize(statement);

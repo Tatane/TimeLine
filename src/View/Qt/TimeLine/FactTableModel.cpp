@@ -1,8 +1,8 @@
 #include "facttablemodel.h"
 #include <QFont>
 
-FactTableModel::FactTableModel(std::vector<Fact*> * vec)
-    : vecFacts(vec)
+FactTableModel::FactTableModel(std::vector<Fact*> & vec)
+    : vecFacts(&vec)
 {
 
 }

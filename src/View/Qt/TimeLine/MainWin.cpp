@@ -10,7 +10,7 @@
 
 MainWin::MainWin(QWidget *parent) :
     QDialog(parent),
-    factTableModel(&vecFacts),
+    factTableModel(vecFacts),
     ui(new Ui::MainWin)
 {
     ui->setupUi(this);
@@ -30,10 +30,13 @@ MainWin::~MainWin()
 
 void MainWin::displayFacts()
 {
-    // read from database
-    DataAcces::getInstance()->getAllFacts(&vecFacts);
+    // Read from database. The Model already has a reference to this container.
+    DataAcces::getInstance()->getAllFacts(vecFacts);
 
+    // Init the Proxy model with the "real" model :
     proxyModel.setSourceModel(&factTableModel);
+
+    // Use the Porxy model to display in the View :
     ui->tableView->setModel(&proxyModel);
 }
 
