@@ -31,7 +31,7 @@ private:
     FactTableModel factTableModel;
     MySortFilterProxyModel proxyModel;
 
-    void displayFacts();
+    void loadModelData();
 
 };
 

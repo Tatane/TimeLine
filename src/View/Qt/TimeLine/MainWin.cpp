@@ -20,7 +20,7 @@ MainWin::MainWin(QWidget *parent) :
     connect(ui->btnRemoveFact, SIGNAL(clicked(bool)), this, SLOT(onBtnRemoveFact()));
     connect(ui->btnEditFact, SIGNAL(clicked(bool)), this, SLOT(onBtnEditFact()));
 
-    displayFacts();
+    loadModelData();
 }
 
 MainWin::~MainWin()
@@ -28,7 +28,7 @@ MainWin::~MainWin()
     delete ui;
 }
 
-void MainWin::displayFacts()
+void MainWin::loadModelData()
 {
     // Read from database. The Model already has a reference to this container.
     DataAcces::getInstance()->getAllFacts(vecFacts);
