@@ -2,7 +2,6 @@
 #define DATAACCES_H
 
 #include <vector>
-#include <map>
 #include "POCO/Fact.h"
 #include "sqlite3.h"
 

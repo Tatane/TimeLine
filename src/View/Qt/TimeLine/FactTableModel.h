@@ -9,7 +9,6 @@ class FactTableModel : public QAbstractTableModel
 {
 public:
     FactTableModel(std::vector<Fact*> * vecFacts);
-    FactTableModel(std::map<int, Fact*> * mapFacts);
 
     // QAbstractItemModel interface
 public:
@@ -23,7 +22,6 @@ public:
 
 private:
     std::vector<Fact*> * vecFacts;
-    std::map<int, Fact*> * mapFacts;
 };
 
 #endif // FACTTABLEMODEL_H

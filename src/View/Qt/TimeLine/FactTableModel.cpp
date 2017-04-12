@@ -7,16 +7,9 @@ FactTableModel::FactTableModel(std::vector<Fact*> * vec)
 
 }
 
-FactTableModel::FactTableModel(std::map<int, Fact*> * map)
-    : mapFacts(map)
-{
-
-}
-
 int FactTableModel::rowCount(const QModelIndex &parent) const
 {
     return vecFacts->size();
-    //return mapFacts->size();
 }
 
 int FactTableModel::columnCount(const QModelIndex &parent) const
