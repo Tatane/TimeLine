@@ -21,7 +21,7 @@ SOURCES += main.cpp\
     MainWin.cpp \
     FactTableModel.cpp \
     FactDialog.cpp \
-    MySortFilterProxyModel.cpp
+    FactSortFilterProxyModel.cpp
 
 HEADERS  += ../../../DAL/DataAcces.h \
     ../../../DAL/sqlite3.h \
@@ -30,7 +30,7 @@ HEADERS  += ../../../DAL/DataAcces.h \
     MainWin.h \
     FactTableModel.h \
     FactDialog.h \
-    MySortFilterProxyModel.h
+    FactSortFilterProxyModel.h
 
 FORMS += \
     MainWin.ui \

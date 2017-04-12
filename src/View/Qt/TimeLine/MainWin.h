@@ -5,7 +5,7 @@
 #include "POCO/Fact.h"
 #include "FactTableModel.h"
 //#include <QSortFilterProxyModel>
-#include "MySortFilterProxyModel.h"
+#include "FactSortFilterProxyModel.h"
 
 namespace Ui {
 class MainWin;
@@ -29,7 +29,7 @@ private:
     Ui::MainWin *ui;
     std::vector<Fact*> vecFacts;
     FactTableModel factTableModel;
-    MySortFilterProxyModel proxyModel;
+    FactSortFilterProxyModel proxyModel;
 
     void loadModelData();
 

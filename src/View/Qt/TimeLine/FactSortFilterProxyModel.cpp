@@ -1,12 +1,12 @@
-#include "MySortFilterProxyModel.h"
+#include "FactSortFilterProxyModel.h"
 
-MySortFilterProxyModel::MySortFilterProxyModel()
+FactSortFilterProxyModel::FactSortFilterProxyModel()
 {
 
 }
 
 
-bool MySortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool FactSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
     QModelIndex index = sourceModel()->index(source_row, 3, source_parent);
     QString str = sourceModel()->data(index).toString();
