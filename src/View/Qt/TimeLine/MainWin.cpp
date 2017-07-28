@@ -72,29 +72,36 @@ void MainWin::onBtnAddFact()
 
 void MainWin::onBtnRemoveFact()
 {
-    QMessageBox msg;
-    msg.setText("Permanently remove selected rows ?");
-    msg.setIcon(QMessageBox::Question);
-    msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
-    msg.setDefaultButton(QMessageBox::Cancel);
-    if (msg.exec() == QMessageBox::Ok) {
+    QModelIndexList selectedRowsIndexes = ui->tableView->selectionModel()->selectedRows();
+    if (selectedRowsIndexes.size() == 0) {
+        QMessageBox msg;
+        msg.setText("Select at least one row.");
+        msg.setIcon(QMessageBox::Information);
+        msg.exec();
+        return;
+    } else {
+        QMessageBox msg;
+        msg.setText("Permanently remove selected rows ?");
+        msg.setIcon(QMessageBox::Question);
+        msg.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+        msg.setDefaultButton(QMessageBox::Cancel);
+        if (msg.exec() == QMessageBox::Ok) {
+            std::vector<int> selectedRows;
+            foreach (QModelIndex index, selectedRowsIndexes) {
+                index = sortFilterProxyModel.mapToSource(index);
+                selectedRows.push_back(index.row());
+            }
+            // Sort descending, because deleting a row will shift indexes of nexts rows. So we want to start to delete from the end.
+            std::sort(selectedRows.begin(), selectedRows.end(), std::greater<int>());
 
-        QModelIndexList selectedRowsIndexes = ui->tableView->selectionModel()->selectedRows();
-        std::vector<int> selectedRows;
-        foreach (QModelIndex index, selectedRowsIndexes) {
-            index = sortFilterProxyModel.mapToSource(index);
-            selectedRows.push_back(index.row());
+            foreach (int row, selectedRows) {
+                DataAcces::getInstance()->deleteFact(*(vecFacts[row])); // delete from the database.
+                sortFilterProxyModel.rowRemoved(row); // remove the row from the table.
+                delete vecFacts[row];   // delete the instance.
+                vecFacts.erase(vecFacts.begin()+row); // remove from the container.
+            }
+
         }
-        // Sort descending, because deleting a row will shift indexes of nexts rows. So we want to start to delete from the end.
-        std::sort(selectedRows.begin(), selectedRows.end(), std::greater<int>());
-
-        foreach (int row, selectedRows) {
-            DataAcces::getInstance()->deleteFact(*(vecFacts[row])); // delete from the database.
-            sortFilterProxyModel.rowRemoved(row); // remove the row from the table.
-            delete vecFacts[row];   // delete the instance.
-            vecFacts.erase(vecFacts.begin()+row); // remove from the container.
-        }
-
     }
 }
 
