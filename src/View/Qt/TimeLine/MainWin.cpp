@@ -11,6 +11,8 @@
 MainWin::MainWin(QWidget *parent) :
     QDialog(parent),
     factTableModel(vecFacts),
+    //sortFilterProxyModel(vecFacts),
+    sortFilterProxyModel(),
     ui(new Ui::MainWin)
 {
     ui->setupUi(this);
@@ -34,10 +36,10 @@ void MainWin::loadModelData()
     DataAcces::getInstance()->getAllFacts(vecFacts);
 
     // Init the Proxy model with the "real" model :
-    proxyModel.setSourceModel(&factTableModel);
+    sortFilterProxyModel.setSourceModel(factTableModel);
 
     // Use the Porxy model to display in the View :
-    ui->tableView->setModel(&proxyModel);
+    ui->tableView->setModel(&sortFilterProxyModel);
 }
 
 void MainWin::onBtnQuit()
@@ -63,7 +65,7 @@ void MainWin::onBtnAddFact()
     if (ret == QDialog::Accepted && *pFact != NULL) {
         vecFacts.push_back(*pFact);
 
-        factTableModel.rowAppened();
+        sortFilterProxyModel.rowAppened();
         ui->tableView->selectRow(vecFacts.size()-1);
     }
 }
@@ -80,7 +82,7 @@ void MainWin::onBtnRemoveFact()
         QModelIndexList selectedRowsIndexes = ui->tableView->selectionModel()->selectedRows();
         std::vector<int> selectedRows;
         foreach (QModelIndex index, selectedRowsIndexes) {
-            index = proxyModel.mapToSource(index);
+            index = sortFilterProxyModel.mapToSource(index);
             selectedRows.push_back(index.row());
         }
         // Sort descending, because deleting a row will shift indexes of nexts rows. So we want to start to delete from the end.
@@ -88,7 +90,7 @@ void MainWin::onBtnRemoveFact()
 
         foreach (int row, selectedRows) {
             DataAcces::getInstance()->deleteFact(*(vecFacts[row])); // delete from the database.
-            factTableModel.rowRemoved(row); // remove the row from the table.
+            sortFilterProxyModel.rowRemoved(row); // remove the row from the table.
             delete vecFacts[row];   // delete the instance.
             vecFacts.erase(vecFacts.begin()+row); // remove from the container.
         }
@@ -106,7 +108,7 @@ void MainWin::onBtnEditFact()
         msg.exec();
         return;
     } else {
-        QModelIndex index = proxyModel.mapToSource(selectedRowsIndexes.first());
+        QModelIndex index = sortFilterProxyModel.mapToSource(selectedRowsIndexes.first());
         Fact* fact = vecFacts[index.row()];
         if (fact != NULL) {
             FactDialog factDialog(&fact);
