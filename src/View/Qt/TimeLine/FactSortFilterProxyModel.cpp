@@ -2,6 +2,7 @@
 
 FactSortFilterProxyModel::FactSortFilterProxyModel()
     :factTableModel(0)
+    ,textFilter("")
 {
 }
 
@@ -15,7 +16,6 @@ void FactSortFilterProxyModel::setTextFilter(QString textFilter)
     beginResetModel();
     this->textFilter = textFilter;
     endResetModel();
-
 }
 
 bool FactSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
