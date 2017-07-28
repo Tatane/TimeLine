@@ -19,6 +19,7 @@ private slots:
     void onBtnAddFact();
     void onBtnRemoveFact();
     void onBtnEditFact();
+    void onFilterChanged(QString filterValue);
 
 public:
     explicit MainWin(QWidget *parent = 0);

@@ -22,6 +22,8 @@ MainWin::MainWin(QWidget *parent) :
     connect(ui->btnRemoveFact, SIGNAL(clicked(bool)), this, SLOT(onBtnRemoveFact()));
     connect(ui->btnEditFact, SIGNAL(clicked(bool)), this, SLOT(onBtnEditFact()));
 
+    connect(ui->filter, SIGNAL(textEdited(QString)), this, SLOT(onFilterChanged(QString)));
+
     loadModelData();
 }
 
@@ -122,4 +124,10 @@ void MainWin::onBtnEditFact()
             factDialog.exec();
         }
     }
+}
+
+void MainWin::onFilterChanged(QString filterValue)
+{
+    sortFilterProxyModel.setTextFilter(filterValue);
+    ui->tableView->update();
 }

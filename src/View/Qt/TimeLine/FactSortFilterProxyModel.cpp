@@ -10,11 +10,23 @@ void FactSortFilterProxyModel::setSourceModel(FactTableModel & sourceModel){
     factTableModel = &sourceModel;
 }
 
+void FactSortFilterProxyModel::setTextFilter(QString textFilter)
+{
+    beginResetModel();
+    this->textFilter = textFilter;
+    endResetModel();
+
+}
+
 bool FactSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
     QModelIndex index = sourceModel()->index(source_row, 3, source_parent);
     QString str = sourceModel()->data(index).toString();
-    if (str.contains("a")) return true; else return false;
+    if (textFilter.isEmpty() || str.contains(textFilter)) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void FactSortFilterProxyModel::rowAppened()

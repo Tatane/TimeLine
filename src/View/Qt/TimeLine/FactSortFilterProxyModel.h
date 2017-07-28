@@ -1,8 +1,10 @@
 #ifndef FACTSORTFILTERPROXYMODEL_H
 #define FACTSORTFILTERPROXYMODEL_H
 
-#include <QSortFilterProxyModel>
 #include "FactTableModel.h"
+
+#include <QSortFilterProxyModel>
+#include <QString>
 
 class FactSortFilterProxyModel : public QSortFilterProxyModel
 {
@@ -12,6 +14,7 @@ public:
     void rowAppened();
     void rowRemoved(int row);
     void setSourceModel(FactTableModel & sourceModel);
+    void setTextFilter(QString textFilter);
 
     // QSortFilterProxyModel interface
 protected:
@@ -19,6 +22,7 @@ protected:
 
 private:
     FactTableModel * factTableModel;
+    QString textFilter;
 
 };
 
