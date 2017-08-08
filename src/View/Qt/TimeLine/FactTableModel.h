@@ -20,6 +20,17 @@ public:
     void rowAppened();
     void rowRemoved(int row);
 
+    class DataColumn
+    {
+    public:
+        enum {
+            StartTime,
+            Endtime,
+            Title,
+            Description
+        };
+    };
+
 private:
     std::vector<Fact*> * vecFacts;
 };

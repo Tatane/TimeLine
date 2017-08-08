@@ -20,9 +20,13 @@ void FactSortFilterProxyModel::setTextFilter(QString textFilter)
 
 bool FactSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
-    QModelIndex index = sourceModel()->index(source_row, 3, source_parent);
-    QString str = sourceModel()->data(index).toString();
-    if (textFilter.isEmpty() || str.contains(textFilter)) {
+    QModelIndex indexDescription = sourceModel()->index(source_row, FactTableModel::DataColumn::Description, source_parent);
+    QString description = sourceModel()->data(indexDescription).toString();
+
+    QModelIndex indexTitle = sourceModel()->index(source_row, FactTableModel::DataColumn::Title, source_parent);
+    QString title = sourceModel()->data(indexTitle).toString();
+
+    if (textFilter.isEmpty() || description.contains(textFilter) || title.contains(textFilter)) {
         return true;
     } else {
         return false;

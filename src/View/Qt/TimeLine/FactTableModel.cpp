@@ -27,16 +27,16 @@ QVariant FactTableModel::data(const QModelIndex &index, int role) const
 
     switch (index.column()) {
 
-    case 0:
+    case DataColumn::StartTime :
         return QVariant(fact->getStartTime().toString().c_str());
         break;
-    case 1:
+    case DataColumn::Endtime :
         return QVariant(fact->getEndTime().toString().c_str());
         break;
-    case 2:
+    case DataColumn::Title :
         return QVariant(fact->getTitle().c_str());
         break;
-    case 3:
+    case DataColumn::Description :
         return QVariant(fact->getDescription().c_str());
         break;
     default:
