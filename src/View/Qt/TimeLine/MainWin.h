@@ -20,6 +20,7 @@ private slots:
     void onBtnRemoveFact();
     void onBtnEditFact();
     void onFilterChanged(QString filterValue);
+    void onBtnDatePickerStart();
 
 public:
     explicit MainWin(QWidget *parent = 0);

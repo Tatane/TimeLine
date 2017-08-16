@@ -7,6 +7,7 @@
 #include "FactDialog.h"
 #include <algorithm>
 #include <QSortFilterProxyModel>
+#include "Datepicker.h"
 
 MainWin::MainWin(QWidget *parent) :
     QDialog(parent),
@@ -23,6 +24,9 @@ MainWin::MainWin(QWidget *parent) :
     connect(ui->btnEditFact, SIGNAL(clicked(bool)), this, SLOT(onBtnEditFact()));
 
     connect(ui->filter, SIGNAL(textEdited(QString)), this, SLOT(onFilterChanged(QString)));
+    connect(ui->btnDatePickerStart, SIGNAL(clicked(bool)), this, SLOT(onBtnDatePickerStart()));
+
+
 
     loadModelData();
 }
@@ -130,4 +134,14 @@ void MainWin::onFilterChanged(QString filterValue)
 {
     sortFilterProxyModel.setTextFilter(filterValue);
     ui->tableView->update();
+}
+
+void MainWin::onBtnDatePickerStart()
+{
+    DatePicker datePicker(this);
+    datePicker.setWindowFlags(/*Qt::FramelessWindowHint |*/ Qt::Popup);
+    //datePicker.move(mapToParent(ui->btnDatePickerStart->pos()));
+    datePicker.move(QCursor::pos());
+    datePicker.exec();
+    ui->dateEditStartTime->setDate(datePicker.selectedDate());
 }
