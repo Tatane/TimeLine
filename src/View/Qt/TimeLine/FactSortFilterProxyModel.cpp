@@ -3,6 +3,8 @@
 FactSortFilterProxyModel::FactSortFilterProxyModel()
     :factTableModel(0)
     ,textFilter("")
+    ,startDateFilter(QDate(1900,1,1))
+    ,endDateFilter(QDate(2100, 1, 1))
 {
 }
 
@@ -18,6 +20,14 @@ void FactSortFilterProxyModel::setTextFilter(QString textFilter)
     endResetModel();
 }
 
+void FactSortFilterProxyModel::setDatesFilter(QDate startDate, QDate endDate)
+{
+    beginResetModel();
+    this->startDateFilter = startDate;
+    this->endDateFilter = endDate;
+    endResetModel();
+}
+
 bool FactSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
     QModelIndex indexDescription = sourceModel()->index(source_row, FactTableModel::DataColumn::Description, source_parent);
@@ -26,7 +36,16 @@ bool FactSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelInde
     QModelIndex indexTitle = sourceModel()->index(source_row, FactTableModel::DataColumn::Title, source_parent);
     QString title = sourceModel()->data(indexTitle).toString();
 
-    if (textFilter.isEmpty() || description.contains(textFilter) || title.contains(textFilter)) {
+    QModelIndex indexStartTime = sourceModel()->index(source_row, FactTableModel::DataColumn::StartTime, source_parent);
+    QDate factStartTime = sourceModel()->data(indexStartTime).toDate();
+
+    QModelIndex indexEndTime = sourceModel()->index(source_row, FactTableModel::DataColumn::Endtime, source_parent);
+    QDate factEndTime = sourceModel()->data(indexEndTime).toDate();
+
+    if ( (textFilter.isEmpty() || description.contains(textFilter) || title.contains(textFilter))
+         && factStartTime >= startDateFilter
+         && factEndTime <= endDateFilter
+    ) {
         return true;
     } else {
         return false;

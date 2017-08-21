@@ -24,6 +24,9 @@ MainWin::MainWin(QWidget *parent) :
 
     connect(ui->filter, SIGNAL(textEdited(QString)), this, SLOT(onFilterChanged(QString)));
 
+    connect(ui->dateEditStartTime, SIGNAL(dateChanged(QDate)), this, SLOT(onDatesFilterChanged()));
+    connect(ui->dateEditEndTime, SIGNAL(dateChanged(QDate)), this, SLOT(onDatesFilterChanged()));
+
     loadModelData();
 }
 
@@ -36,6 +39,13 @@ void MainWin::loadModelData()
 {
     // Read from database. The Model already has a reference to this container.
     DataAcces::getInstance()->getAllFacts(vecFacts);
+
+    if (factTableModel.rowCount() >= 1) {
+        TimeHour minimumStartDate, maximumEndDate;
+        DataAcces::getInstance()->getDatesBounds(minimumStartDate, maximumEndDate);
+        ui->dateEditStartTime->setDate(QDate(minimumStartDate.year(), minimumStartDate.month(), minimumStartDate.day()));
+        ui->dateEditEndTime->setDate(QDate(maximumEndDate.year(), maximumEndDate.month(), maximumEndDate.day()));
+    }
 
     // Init the Proxy model with the "real" model :
     sortFilterProxyModel.setSourceModel(factTableModel);
@@ -131,3 +141,11 @@ void MainWin::onFilterChanged(QString filterValue)
     sortFilterProxyModel.setTextFilter(filterValue);
     ui->tableView->update();
 }
+
+void MainWin::onDatesFilterChanged()
+{
+    sortFilterProxyModel.setDatesFilter(ui->dateEditStartTime->date(), ui->dateEditEndTime->date());
+    ui->tableView->update();
+}
+
+

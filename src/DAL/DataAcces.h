@@ -29,6 +29,7 @@ public:
     bool deleteFact(const Fact &);
     bool updateFact(const Fact &);
     bool recreateDatabase() ;
+    void getDatesBounds(TimeHour & minimumStartDate, TimeHour & maximumEndDate);
 
     struct Columns_Fact_Table{
         enum {

@@ -7,7 +7,7 @@ FactTableModel::FactTableModel(std::vector<Fact*> & vec)
 
 }
 
-int FactTableModel::rowCount(const QModelIndex &parent) const
+int FactTableModel::rowCount(const QModelIndex &) const
 {
     return vecFacts->size();
 }

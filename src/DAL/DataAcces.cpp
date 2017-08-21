@@ -144,6 +144,53 @@ bool DataAcces::recreateDatabase()
     return false;
 }
 
+void DataAcces::getDatesBounds(TimeHour &minimumStartDate, TimeHour &maximumEndDate)
+{
+    //minimumStartDate.set(1999, 01, 01, 00, 00, 00);
+    //maximumEndDate.set(2039, 12, 31, 23, 59, 59);
+
+    sqlite3_stmt * statement;
+    char requete[256];
+    sprintf(requete, "SELECT %s FROM %s ORDER BY %s ASC LIMIT 1", TABLE_FACT_COLUMN_STARTTIME, TABLE_FACT, TABLE_FACT_COLUMN_STARTTIME);
+    int ret = sqlite3_prepare_v2(db, requete, strlen(requete), &statement, NULL);
+    if (ret != SQLITE_OK) {
+        std::cerr<<"Error on slite3_prepare_v2"<<std::endl;
+        exit(-1);
+    }
+
+    while (sqlite3_step(statement) == SQLITE_ROW){
+        int year, month, day, hour, minute, second;
+        const unsigned char * val = sqlite3_column_text(statement, 0);
+        if (val != 0){
+            sscanf((const char *)val, "%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
+            minimumStartDate.set(year, month, day, hour, minute, second);
+        } else {
+            std::cout<<"No value"<<std::endl;
+        }
+    }
+
+    sprintf(requete, "SELECT %s FROM %s ORDER BY %s DESC LIMIT 1", TABLE_FACT_COLUMN_ENDTIME, TABLE_FACT, TABLE_FACT_COLUMN_ENDTIME);
+    ret = sqlite3_prepare_v2(db, requete, strlen(requete), &statement, NULL);
+    if (ret != SQLITE_OK) {
+        std::cerr<<"Error on slite3_prepare_v2"<<std::endl;
+        exit(-1);
+    }
+
+    while (sqlite3_step(statement) == SQLITE_ROW){
+        int year, month, day, hour, minute, second;
+        const unsigned char * val = sqlite3_column_text(statement, 0);
+        if (val != 0){
+            sscanf((const char *)val, "%d-%d-%d %d:%d:%d", &year, &month, &day, &hour, &minute, &second);
+            maximumEndDate.set(year, month, day, hour, minute, second);
+        } else {
+            std::cout<<"No value"<<std::endl;
+        }
+    }
+
+    sqlite3_finalize(statement);
+
+}
+
 void DataAcces::insertFact(Fact & newFact)
 {
 	std::cout<<"insertFact"<<std::endl;

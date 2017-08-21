@@ -5,6 +5,7 @@
 
 #include <QSortFilterProxyModel>
 #include <QString>
+#include <QDate>
 
 class FactSortFilterProxyModel : public QSortFilterProxyModel
 {
@@ -15,6 +16,7 @@ public:
     void rowRemoved(int row);
     void setSourceModel(FactTableModel & sourceModel);
     void setTextFilter(QString textFilter);
+    void setDatesFilter(QDate startDate, QDate endDate);
 
     // QSortFilterProxyModel interface
 protected:
@@ -23,6 +25,7 @@ protected:
 private:
     FactTableModel * factTableModel;
     QString textFilter;
+    QDate startDateFilter, endDateFilter;
 
 };
 
