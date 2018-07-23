@@ -42,7 +42,7 @@ bool FactSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelInde
     QModelIndex indexEndTime = sourceModel()->index(source_row, FactTableModel::DataColumn::Endtime, source_parent);
     QDate factEndTime = sourceModel()->data(indexEndTime).toDate();
 
-    if ( (textFilter.isEmpty() || description.contains(textFilter) || title.contains(textFilter))
+    if ( (textFilter.isEmpty() || description.contains(textFilter, Qt::CaseInsensitive) || title.contains(textFilter, Qt::CaseInsensitive))
          && factStartTime >= startDateFilter
          && factEndTime <= endDateFilter
     ) {
