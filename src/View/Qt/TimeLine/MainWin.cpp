@@ -11,7 +11,6 @@
 MainWin::MainWin(QWidget *parent) :
     QDialog(parent),
     factTableModel(nullptr),
-    //sortFilterProxyModel(vecFacts),
     sortFilterProxyModel(),
     ui(new Ui::MainWin)
 {
@@ -28,6 +27,9 @@ MainWin::MainWin(QWidget *parent) :
     connect(ui->dateEditEndTime, SIGNAL(dateChanged(QDate)), this, SLOT(onDatesFilterChanged()));
 
     loadModelData();
+
+    // Resize all columns to fit their contents :
+    ui->tableView->resizeColumnsToContents();
 }
 
 MainWin::~MainWin()
@@ -37,22 +39,25 @@ MainWin::~MainWin()
 
 void MainWin::loadModelData()
 {
-    // Read from database. The Model already has a reference to this container.
+    // Read from database and fill the Model :
     DataAcces::getInstance()->getAllFacts(*(facts.getVecFacts()));
+
+    // Set the TableModel with the Model :
     factTableModel.setVectFacts(facts.getVecFacts());
 
+    // Set the ProxyModel with the TableModel :
+    sortFilterProxyModel.setSourceModel(factTableModel);
+
+    // Set the View with the ProxyModel :
+    ui->tableView->setModel(&sortFilterProxyModel);
+
+    // Initialize the Start and End time widgets with the bounds of the database :
     if (factTableModel.rowCount() >= 1) {
         TimeHour minimumStartDate, maximumEndDate;
         DataAcces::getInstance()->getDatesBounds(minimumStartDate, maximumEndDate);
         ui->dateEditStartTime->setDate(QDate(minimumStartDate.year(), minimumStartDate.month(), minimumStartDate.day()));
         ui->dateEditEndTime->setDate(QDate(maximumEndDate.year(), maximumEndDate.month(), maximumEndDate.day()));
     }
-
-    // Init the Proxy model with the "real" model :
-    sortFilterProxyModel.setSourceModel(factTableModel);
-
-    // Use the Porxy model to display in the View :
-    ui->tableView->setModel(&sortFilterProxyModel);
 }
 
 void MainWin::onBtnQuit()

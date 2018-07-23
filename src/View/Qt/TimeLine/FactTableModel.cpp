@@ -1,5 +1,6 @@
 #include "facttablemodel.h"
 #include <QFont>
+#include <QColor>
 
 FactTableModel::FactTableModel()
     : vecFacts(nullptr)
@@ -30,30 +31,46 @@ int FactTableModel::columnCount(const QModelIndex &parent) const
 
 QVariant FactTableModel::data(const QModelIndex &index, int role) const
 {
-    if (role != Qt::DisplayRole) {
+    if (role == Qt::DisplayRole)
+    {
+        Fact* fact = vecFacts->at(index.row());
+
+        switch (index.column()) {
+
+        case DataColumn::StartTime :
+            return QVariant(fact->getStartTime().toString().c_str());
+            break;
+        case DataColumn::Endtime :
+            return QVariant(fact->getEndTime().toString().c_str());
+            break;
+        case DataColumn::Title :
+            return QVariant(fact->getTitle().c_str());
+            break;
+        case DataColumn::Description :
+            return QVariant(fact->getDescription().c_str());
+            break;
+        default:
+            return QVariant();
+            break;
+        }
+    }
+    else if (role == Qt::BackgroundColorRole)
+    {
+        if (index.row() % 2 == 0)
+        {
+            return QVariant(QColor(140, 180, 200));
+        }
+        else
+        {
+            return QVariant(QColor(140, 170, 200));
+        }
+    }
+    else
+    {
         return QVariant();
     }
 
-    Fact* fact = vecFacts->at(index.row());
-
-    switch (index.column()) {
-
-    case DataColumn::StartTime :
-        return QVariant(fact->getStartTime().toString().c_str());
-        break;
-    case DataColumn::Endtime :
-        return QVariant(fact->getEndTime().toString().c_str());
-        break;
-    case DataColumn::Title :
-        return QVariant(fact->getTitle().c_str());
-        break;
-    case DataColumn::Description :
-        return QVariant(fact->getDescription().c_str());
-        break;
-    default:
-        return QVariant();
-        break;
-    }
+    return QVariant();
 }
 
 void FactTableModel::rowAppened()
@@ -71,7 +88,6 @@ void FactTableModel::rowRemoved(int row)
 
 QVariant FactTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
 
@@ -92,13 +108,15 @@ QVariant FactTableModel::headerData(int section, Qt::Orientation orientation, in
             break;
         }
     }
-
-    if (role == Qt::FontRole) {
+    else if (role == Qt::FontRole) {
         QFont font;
         font.setBold(true);
         font.setUnderline(true);
         return QVariant(font);
     }
-
-    return QVariant();
+    else
+    {
+        return QVariant();
+    }
 }
+
