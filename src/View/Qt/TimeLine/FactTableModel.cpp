@@ -1,6 +1,6 @@
 #include "facttablemodel.h"
 #include <QFont>
-#include <QColor>
+#include "AlxColors.h"
 
 FactTableModel::FactTableModel()
     : vecFacts(nullptr)
@@ -58,11 +58,11 @@ QVariant FactTableModel::data(const QModelIndex &index, int role) const
     {
         if (index.row() % 2 == 0)
         {
-            return QVariant(QColor(140, 180, 200));
+            return QVariant(AlxColors::COLOR_2);
         }
         else
         {
-            return QVariant(QColor(140, 170, 200));
+            return QVariant(AlxColors::COLOR_3);
         }
     }
     else
@@ -111,7 +111,6 @@ QVariant FactTableModel::headerData(int section, Qt::Orientation orientation, in
     else if (role == Qt::FontRole) {
         QFont font;
         font.setBold(true);
-        font.setUnderline(true);
         return QVariant(font);
     }
     else

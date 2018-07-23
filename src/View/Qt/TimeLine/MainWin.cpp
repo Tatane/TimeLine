@@ -8,6 +8,9 @@
 #include <algorithm>
 #include <QSortFilterProxyModel>
 
+#include <QApplication>
+#include "AlxColors.h"
+
 MainWin::MainWin(QWidget *parent) :
     QDialog(parent),
     factTableModel(nullptr),
@@ -30,6 +33,9 @@ MainWin::MainWin(QWidget *parent) :
 
     // Resize all columns to fit their contents :
     ui->tableView->resizeColumnsToContents();
+
+    // Set the background color of the main window :
+    qApp->palette().setColor(QPalette::Window, AlxColors::COLOR_1);
 }
 
 MainWin::~MainWin()

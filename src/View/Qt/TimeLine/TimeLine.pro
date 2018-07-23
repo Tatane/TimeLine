@@ -22,7 +22,8 @@ SOURCES += main.cpp\
     FactTableModel.cpp \
     FactDialog.cpp \
     FactSortFilterProxyModel.cpp \
-    Facts.cpp
+    Facts.cpp \
+    AlxColors.cpp
 
 HEADERS  += ../../../DAL/DataAcces.h \
     ../../../DAL/sqlite3.h \
@@ -32,7 +33,8 @@ HEADERS  += ../../../DAL/DataAcces.h \
     FactTableModel.h \
     FactDialog.h \
     FactSortFilterProxyModel.h \
-    Facts.h
+    Facts.h \
+    AlxColors.h
 
 FORMS += \
     MainWin.ui \
