@@ -10,7 +10,7 @@
 
 MainWin::MainWin(QWidget *parent) :
     QDialog(parent),
-    factTableModel(vecFacts),
+    factTableModel(nullptr),
     //sortFilterProxyModel(vecFacts),
     sortFilterProxyModel(),
     ui(new Ui::MainWin)
@@ -38,7 +38,8 @@ MainWin::~MainWin()
 void MainWin::loadModelData()
 {
     // Read from database. The Model already has a reference to this container.
-    DataAcces::getInstance()->getAllFacts(vecFacts);
+    DataAcces::getInstance()->getAllFacts(*(facts.getVecFacts()));
+    factTableModel.setVectFacts(facts.getVecFacts());
 
     if (factTableModel.rowCount() >= 1) {
         TimeHour minimumStartDate, maximumEndDate;
@@ -75,10 +76,10 @@ void MainWin::onBtnAddFact()
     FactDialog factDialog(pFact);
     int ret = factDialog.exec();
     if (ret == QDialog::Accepted && *pFact != NULL) {
-        vecFacts.push_back(*pFact);
+        facts.add(*pFact);
 
         sortFilterProxyModel.rowAppened();
-        ui->tableView->selectRow(vecFacts.size()-1);
+        ui->tableView->selectRow(facts.size()-1);
     }
 }
 
@@ -107,10 +108,10 @@ void MainWin::onBtnRemoveFact()
             std::sort(selectedRows.begin(), selectedRows.end(), std::greater<int>());
 
             foreach (int row, selectedRows) {
-                DataAcces::getInstance()->deleteFact(*(vecFacts[row])); // delete from the database.
+                DataAcces::getInstance()->deleteFact(*(facts[row])); // delete from the database.
                 sortFilterProxyModel.rowRemoved(row); // remove the row from the table.
-                delete vecFacts[row];   // delete the instance.
-                vecFacts.erase(vecFacts.begin()+row); // remove from the container.
+                delete facts[row];   // delete the instance.
+                facts.erase(row); // remove from the container.
             }
 
         }
@@ -128,7 +129,7 @@ void MainWin::onBtnEditFact()
         return;
     } else {
         QModelIndex index = sortFilterProxyModel.mapToSource(selectedRowsIndexes.first());
-        Fact* fact = vecFacts[index.row()];
+        Fact* fact = facts[index.row()];
         if (fact != NULL) {
             FactDialog factDialog(&fact);
             factDialog.exec();

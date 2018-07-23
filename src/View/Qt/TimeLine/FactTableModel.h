@@ -8,7 +8,11 @@
 class FactTableModel : public QAbstractTableModel
 {
 public:
-    FactTableModel(std::vector<Fact *> & vecFacts);
+    FactTableModel();
+    FactTableModel(std::vector<Fact *> *vecFacts);
+
+    void setVectFacts(std::vector<Fact*> * iVecFacts);
+
 
     // QAbstractItemModel interface
 public:

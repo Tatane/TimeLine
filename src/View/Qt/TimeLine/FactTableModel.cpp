@@ -1,10 +1,21 @@
 #include "facttablemodel.h"
 #include <QFont>
 
-FactTableModel::FactTableModel(std::vector<Fact*> & vec)
-    : vecFacts(&vec)
+FactTableModel::FactTableModel()
+    : vecFacts(nullptr)
 {
 
+}
+
+FactTableModel::FactTableModel(std::vector<Fact*> * vec)
+    : vecFacts(vec)
+{
+
+}
+
+void FactTableModel::setVectFacts(std::vector<Fact *> * iVecFacts)
+{
+    vecFacts = iVecFacts;
 }
 
 int FactTableModel::rowCount(const QModelIndex &) const

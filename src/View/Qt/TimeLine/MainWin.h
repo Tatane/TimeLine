@@ -2,9 +2,10 @@
 #define MAINWIN_H
 
 #include <QDialog>
-#include "POCO/Fact.h"
+
 #include "FactTableModel.h"
 #include "FactSortFilterProxyModel.h"
+#include "Facts.h"
 
 namespace Ui {
 class MainWin;
@@ -28,7 +29,7 @@ public:
 
 private:
     Ui::MainWin *ui;
-    std::vector<Fact*> vecFacts;
+    Facts facts;
     FactTableModel factTableModel;
     FactSortFilterProxyModel sortFilterProxyModel;
 
