@@ -7,15 +7,9 @@
 
 DataAcces * DataAcces::instance = NULL;
 
-DataAcces::DataAcces(void)
+DataAcces::DataAcces()
+	: db(nullptr)
 {
-    if (sqlite3_open_v2("../maBDD", &db, SQLITE_OPEN_READWRITE, NULL) != SQLITE_OK)
-	{
-        std::cerr<<sqlite3_errmsg(db)<<std::endl;
-        exit(-1);
-	} else {
-		std::cout<<"Database opened"<<std::endl;
-	}
 }
 
 DataAcces* DataAcces::getInstance()
@@ -30,6 +24,11 @@ DataAcces* DataAcces::getInstance()
 
 DataAcces::~DataAcces(void)
 {
+}
+
+bool DataAcces::open()
+{
+	return (sqlite3_open_v2("maBDD", &db, SQLITE_OPEN_READWRITE, NULL) == SQLITE_OK);
 }
 
 void DataAcces::getAllFacts(std::vector<Fact*> & vecFacts)
@@ -60,7 +59,7 @@ bool DataAcces::deleteFact(const Fact & factToDelete)
 {
     sqlite3_stmt * statement;
     const char * requete = "DELETE FROM fact WHERE id=?";
-    int ret = sqlite3_prepare_v2(db, requete, strlen(requete), &statement, NULL);
+    int ret = sqlite3_prepare_v2(db, requete, static_cast<int>(strlen(requete)), &statement, NULL);
     if (ret != SQLITE_OK) {
         std::cerr<<"Error on slite3_prepare_v2"<<std::endl;
         exit(-1);

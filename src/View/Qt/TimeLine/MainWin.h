@@ -6,6 +6,7 @@
 #include "FactTableModel.h"
 #include "FactSortFilterProxyModel.h"
 #include "Facts.h"
+#include "DAL/DataAcces.h"
 
 namespace Ui {
 class MainWin;
@@ -32,6 +33,7 @@ private:
     Facts facts;
     FactTableModel factTableModel;
     FactSortFilterProxyModel sortFilterProxyModel;
+	DataAcces* mDatabase;
 
     void loadModelData();
 

@@ -29,6 +29,26 @@ MainWin::MainWin(QWidget *parent) :
     connect(ui->dateEditStartTime, SIGNAL(dateChanged(QDate)), this, SLOT(onDatesFilterChanged()));
     connect(ui->dateEditEndTime, SIGNAL(dateChanged(QDate)), this, SLOT(onDatesFilterChanged()));
 
+
+	mDatabase = DataAcces::getInstance();
+	if ( ! mDatabase->open() )
+	{
+		QMessageBox msg;
+		msg.setStandardButtons(QMessageBox::Yes | QMessageBox::Cancel);
+		msg.setText("Database file cannot be found. Do you want to create a new empty database ? Choose Cancel to close application.");
+		msg.setIcon(QMessageBox::Question);
+		int ret = msg.exec();
+
+		if (ret == QMessageBox::Yes)
+		{
+			mDatabase->recreateDatabase();
+		}
+		else
+		{
+			exit(0);
+		}
+	}
+
     loadModelData();
 
     // Resize all columns to fit their contents :
@@ -45,29 +65,34 @@ MainWin::~MainWin()
 
 void MainWin::loadModelData()
 {
-    // Read from database and fill the Model :
-    DataAcces::getInstance()->getAllFacts(*(facts.getVecFacts()));
+	if (mDatabase)
+	{
+		// Read from database and fill the Model :
+		mDatabase->getAllFacts(*(facts.getVecFacts()));
 
-    // Set the TableModel with the Model :
-    factTableModel.setVectFacts(facts.getVecFacts());
+		// Set the TableModel with the Model :
+		factTableModel.setVectFacts(facts.getVecFacts());
 
-    // Set the ProxyModel with the TableModel :
-    sortFilterProxyModel.setSourceModel(factTableModel);
+		// Set the ProxyModel with the TableModel :
+		sortFilterProxyModel.setSourceModel(factTableModel);
 
-    // Set the View with the ProxyModel :
-    ui->tableView->setModel(&sortFilterProxyModel);
+		// Set the View with the ProxyModel :
+		ui->tableView->setModel(&sortFilterProxyModel);
+		//ui->tableView->setItemDelegateForColumn(FactTableModel::DataColumn::StartTime, &mDateTimeItemDelegate);
 
-    // Initialize the Start and End time widgets with the bounds of the database :
-    if (factTableModel.rowCount() >= 1) {
-        TimeHour minimumStartDate, maximumEndDate;
-        DataAcces::getInstance()->getDatesBounds(minimumStartDate, maximumEndDate);
-        ui->dateEditStartTime->setDate(QDate(minimumStartDate.year(), minimumStartDate.month(), minimumStartDate.day()));
-        ui->dateEditEndTime->setDate(QDate(maximumEndDate.year(), maximumEndDate.month(), maximumEndDate.day()));
-    }
-}
+		// Initialize the Start and End time widgets with the bounds of the database :
+		if (factTableModel.rowCount() >= 1) {
+			TimeHour minimumStartDate, maximumEndDate;
+			DataAcces::getInstance()->getDatesBounds(minimumStartDate, maximumEndDate);
+			ui->dateEditStartTime->setDate(QDate(minimumStartDate.year(), minimumStartDate.month(), minimumStartDate.day()));
+			ui->dateEditEndTime->setDate(QDate(maximumEndDate.year(), maximumEndDate.month(), maximumEndDate.day()));
+		}
+	}
+ }
 
 void MainWin::onBtnQuit()
 {
+	/*
     QMessageBox msg;
     msg.setText(tr("Do you want to quit ?"));
     msg.setIcon(QMessageBox::Question);
@@ -77,6 +102,8 @@ void MainWin::onBtnQuit()
     if (msg.exec() == QMessageBox::Yes) {
         exit(0);
     }
+	*/
+	exit(0);
 }
 
 void MainWin::onBtnAddFact()

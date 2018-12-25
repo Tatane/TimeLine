@@ -23,6 +23,7 @@ public:
 	static DataAcces * instance;
 	~DataAcces(void);
 
+	bool open();
     void getAllFacts(std::vector<Fact *> & vecFacts);
     void getFacts(const TimeHour & begin, const TimeHour & end);
     void insertFact(Fact & newFact);
