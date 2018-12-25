@@ -50,7 +50,7 @@ void DataAcces::getAllFacts(std::vector<Fact*> & vecFacts)
     sqlite3_finalize(statement);
 }
 
-void DataAcces::getFacts(const TimeHour &begin, const TimeHour &end)
+void DataAcces::getFacts(const ADateTime &begin, const ADateTime &end)
 {
     assert(false && "DataAcces::getFacts is not implemented.");
 }
@@ -143,7 +143,7 @@ bool DataAcces::recreateDatabase()
     return false;
 }
 
-void DataAcces::getDatesBounds(TimeHour &minimumStartDate, TimeHour &maximumEndDate)
+void DataAcces::getDatesBounds(ADateTime &minimumStartDate, ADateTime &maximumEndDate)
 {
     //minimumStartDate.set(1999, 01, 01, 00, 00, 00);
     //maximumEndDate.set(2039, 12, 31, 23, 59, 59);

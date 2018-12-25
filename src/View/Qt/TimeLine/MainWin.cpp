@@ -82,7 +82,7 @@ void MainWin::loadModelData()
 
 		// Initialize the Start and End time widgets with the bounds of the database :
 		if (factTableModel->rowCount() >= 1) {
-			TimeHour minimumStartDate, maximumEndDate;
+			ADateTime minimumStartDate, maximumEndDate;
 			DataAcces::getInstance()->getDatesBounds(minimumStartDate, maximumEndDate);
 			ui->dateEditStartTime->setDate(QDate(minimumStartDate.year(), minimumStartDate.month(), minimumStartDate.day()));
 			ui->dateEditEndTime->setDate(QDate(maximumEndDate.year(), maximumEndDate.month(), maximumEndDate.day()));

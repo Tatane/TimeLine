@@ -25,12 +25,12 @@ public:
 
 	bool open();
     void getAllFacts(std::vector<Fact *> & vecFacts);
-    void getFacts(const TimeHour & begin, const TimeHour & end);
+    void getFacts(const ADateTime & begin, const ADateTime & end);
     void insertFact(Fact & newFact);
     bool deleteFact(const Fact &);
     bool updateFact(const Fact &);
     bool recreateDatabase() ;
-    void getDatesBounds(TimeHour & minimumStartDate, TimeHour & maximumEndDate);
+    void getDatesBounds(ADateTime & minimumStartDate, ADateTime & maximumEndDate);
 
     struct Columns_Fact_Table{
         enum {

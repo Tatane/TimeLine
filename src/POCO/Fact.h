@@ -3,13 +3,13 @@
 
 #include <ctime>
 #include <string>
-#include "TimeHour.h"
+#include "ADateTime.h"
 
 class Fact
 {
     unsigned int id;
-	TimeHour startTime;
-	TimeHour endTime;
+	ADateTime startTime;
+	ADateTime endTime;
 	std::string title;
 	std::string description;
 
@@ -24,8 +24,8 @@ public:
 	void setDescription(std::string text);
 
     int getId() const;
-	TimeHour getStartTime() const;
-	TimeHour getEndTime() const;
+	ADateTime getStartTime() const;
+	ADateTime getEndTime() const;
 	std::string getTitle() const;
 	std::string getDescription() const;
 

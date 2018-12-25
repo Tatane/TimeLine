@@ -20,12 +20,12 @@ int Fact::getId() const
     return id;
 }
 
-TimeHour Fact::getStartTime() const
+ADateTime Fact::getStartTime() const
 {
 	return startTime;
 }
 
-TimeHour Fact::getEndTime() const
+ADateTime Fact::getEndTime() const
 {
 	return endTime;
 }
