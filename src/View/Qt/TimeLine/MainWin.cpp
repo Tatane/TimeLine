@@ -13,8 +13,8 @@
 
 MainWin::MainWin(QWidget *parent) :
     QDialog(parent),
-    factTableModel(nullptr),
-    sortFilterProxyModel(),
+    factTableModel(std::make_unique<FactTableModel>()),
+    sortFilterProxyModel(std::make_unique<FactSortFilterProxyModel>(factTableModel)),
     ui(new Ui::MainWin)
 {
     ui->setupUi(this);
@@ -71,17 +71,17 @@ void MainWin::loadModelData()
 		mDatabase->getAllFacts(*(facts.getVecFacts()));
 
 		// Set the TableModel with the Model :
-		factTableModel.setVectFacts(facts.getVecFacts());
+		factTableModel->setVectFacts(facts.getVecFacts());
 
 		// Set the ProxyModel with the TableModel :
-		sortFilterProxyModel.setSourceModel(factTableModel);
+		sortFilterProxyModel->setSourceModel(factTableModel.get());
 
 		// Set the View with the ProxyModel :
-		ui->tableView->setModel(&sortFilterProxyModel);
+		ui->tableView->setModel(sortFilterProxyModel.get());
 		//ui->tableView->setItemDelegateForColumn(FactTableModel::DataColumn::StartTime, &mDateTimeItemDelegate);
 
 		// Initialize the Start and End time widgets with the bounds of the database :
-		if (factTableModel.rowCount() >= 1) {
+		if (factTableModel->rowCount() >= 1) {
 			TimeHour minimumStartDate, maximumEndDate;
 			DataAcces::getInstance()->getDatesBounds(minimumStartDate, maximumEndDate);
 			ui->dateEditStartTime->setDate(QDate(minimumStartDate.year(), minimumStartDate.month(), minimumStartDate.day()));
@@ -116,7 +116,7 @@ void MainWin::onBtnAddFact()
     if (ret == QDialog::Accepted && *pFact != NULL) {
         facts.add(*pFact);
 
-        sortFilterProxyModel.rowAppened();
+        sortFilterProxyModel->rowAppened();
         ui->tableView->selectRow(facts.size()-1);
     }
 }
@@ -139,7 +139,7 @@ void MainWin::onBtnRemoveFact()
         if (msg.exec() == QMessageBox::Ok) {
             std::vector<int> selectedRows;
             foreach (QModelIndex index, selectedRowsIndexes) {
-                index = sortFilterProxyModel.mapToSource(index);
+                index = sortFilterProxyModel->mapToSource(index);
                 selectedRows.push_back(index.row());
             }
             // Sort descending, because deleting a row will shift indexes of nexts rows. So we want to start to delete from the end.
@@ -147,7 +147,7 @@ void MainWin::onBtnRemoveFact()
 
             foreach (int row, selectedRows) {
                 DataAcces::getInstance()->deleteFact(*(facts[row])); // delete from the database.
-                sortFilterProxyModel.rowRemoved(row); // remove the row from the table.
+                sortFilterProxyModel->rowRemoved(row); // remove the row from the table.
                 delete facts[row];   // delete the instance.
                 facts.erase(row); // remove from the container.
             }
@@ -166,7 +166,7 @@ void MainWin::onBtnEditFact()
         msg.exec();
         return;
     } else {
-        QModelIndex index = sortFilterProxyModel.mapToSource(selectedRowsIndexes.first());
+        QModelIndex index = sortFilterProxyModel->mapToSource(selectedRowsIndexes.first());
         Fact* fact = facts[index.row()];
         if (fact != NULL) {
             FactDialog factDialog(&fact);
@@ -177,13 +177,13 @@ void MainWin::onBtnEditFact()
 
 void MainWin::onFilterChanged(QString filterValue)
 {
-    sortFilterProxyModel.setTextFilter(filterValue);
+    sortFilterProxyModel->setTextFilter(filterValue);
     ui->tableView->update();
 }
 
 void MainWin::onDatesFilterChanged()
 {
-    sortFilterProxyModel.setDatesFilter(ui->dateEditStartTime->date(), ui->dateEditEndTime->date());
+    sortFilterProxyModel->setDatesFilter(ui->dateEditStartTime->date(), ui->dateEditEndTime->date());
     ui->tableView->update();
 }
 

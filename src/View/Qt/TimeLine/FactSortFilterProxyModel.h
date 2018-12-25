@@ -10,11 +10,10 @@
 class FactSortFilterProxyModel : public QSortFilterProxyModel
 {
 public:
-    FactSortFilterProxyModel();
+    FactSortFilterProxyModel(std::unique_ptr<FactTableModel> & model);
 
     void rowAppened();
     void rowRemoved(int row);
-    void setSourceModel(FactTableModel & sourceModel);
     void setTextFilter(QString textFilter);
     void setDatesFilter(QDate startDate, QDate endDate);
 
@@ -23,7 +22,7 @@ protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
 private:
-    FactTableModel * factTableModel;
+    std::unique_ptr<FactTableModel> & factTableModel;
     QString textFilter;
     QDate startDateFilter, endDateFilter;
 

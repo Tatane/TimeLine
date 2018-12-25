@@ -1,16 +1,12 @@
 #include "FactSortFilterProxyModel.h"
 
-FactSortFilterProxyModel::FactSortFilterProxyModel()
-    :factTableModel(0)
+FactSortFilterProxyModel::FactSortFilterProxyModel(std::unique_ptr<FactTableModel> & model)
+    :factTableModel(model)
     ,textFilter("")
     ,startDateFilter(QDate(1900,1,1))
     ,endDateFilter(QDate(2100, 1, 1))
 {
-}
-
-void FactSortFilterProxyModel::setSourceModel(FactTableModel & sourceModel){
-    QSortFilterProxyModel::setSourceModel(&sourceModel);
-    factTableModel = &sourceModel;
+	setSourceModel(factTableModel.get());
 }
 
 void FactSortFilterProxyModel::setTextFilter(QString textFilter)

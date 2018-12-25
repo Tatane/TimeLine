@@ -7,6 +7,7 @@
 #include "FactSortFilterProxyModel.h"
 #include "Facts.h"
 #include "DAL/DataAcces.h"
+#include <memory>
 
 namespace Ui {
 class MainWin;
@@ -31,8 +32,8 @@ public:
 private:
     Ui::MainWin *ui;
     Facts facts;
-    FactTableModel factTableModel;
-    FactSortFilterProxyModel sortFilterProxyModel;
+    std::unique_ptr<FactTableModel> factTableModel;
+    std::unique_ptr<FactSortFilterProxyModel> sortFilterProxyModel;
 	DataAcces* mDatabase;
 
     void loadModelData();
