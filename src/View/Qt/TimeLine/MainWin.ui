@@ -6,9 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>573</width>
-    <height>300</height>
+    <width>808</width>
+    <height>492</height>
    </rect>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>TimeLine</string>
@@ -18,6 +23,11 @@
     <layout class="QVBoxLayout" name="verticalLayout_2">
      <item>
       <widget class="QTableView" name="tableView">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
@@ -42,6 +52,9 @@
       <layout class="QHBoxLayout" name="horizontalLayout_2">
        <item>
         <widget class="QDateEdit" name="dateEditStartTime">
+         <property name="displayFormat">
+          <string>dd MMM yyyy</string>
+         </property>
          <property name="calendarPopup">
           <bool>true</bool>
          </property>
@@ -49,6 +62,9 @@
        </item>
        <item>
         <widget class="QDateEdit" name="dateEditEndTime">
+         <property name="displayFormat">
+          <string>dd MMM yyyy</string>
+         </property>
          <property name="calendarPopup">
           <bool>true</bool>
          </property>
@@ -67,6 +83,11 @@
            <width>200</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
          </property>
          <property name="placeholderText">
           <string>Quick filter</string>
