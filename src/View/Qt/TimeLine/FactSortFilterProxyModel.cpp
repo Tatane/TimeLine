@@ -1,26 +1,26 @@
 #include "FactSortFilterProxyModel.h"
 
 FactSortFilterProxyModel::FactSortFilterProxyModel(std::unique_ptr<FactTableModel> & model)
-    :factTableModel(model)
-    ,textFilter("")
-    ,startDateFilter(QDate(1900,1,1))
-    ,endDateFilter(QDate(2100, 1, 1))
+    :mFactTableModel(model)
+    ,mTextFilter("")
+    ,mStartDateFilter(QDate(1900,1,1))
+    ,mEndDateFilter(QDate(2100, 1, 1))
 {
-	setSourceModel(factTableModel.get());
+	setSourceModel(mFactTableModel.get());
 }
 
 void FactSortFilterProxyModel::setTextFilter(QString textFilter)
 {
     beginResetModel();
-    this->textFilter = textFilter;
+    this->mTextFilter = textFilter;
     endResetModel();
 }
 
 void FactSortFilterProxyModel::setDatesFilter(QDate startDate, QDate endDate)
 {
     beginResetModel();
-    this->startDateFilter = startDate;
-    this->endDateFilter = endDate;
+    this->mStartDateFilter = startDate;
+    this->mEndDateFilter = endDate;
     endResetModel();
 }
 
@@ -38,9 +38,9 @@ bool FactSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelInde
     QModelIndex indexEndTime = sourceModel()->index(source_row, FactTableModel::DataColumn::Endtime, source_parent);
     QDate factEndTime = sourceModel()->data(indexEndTime).toDate();
 
-    if ( (textFilter.isEmpty() || description.contains(textFilter, Qt::CaseInsensitive) || title.contains(textFilter, Qt::CaseInsensitive))
-         && factStartTime >= startDateFilter
-         && factEndTime <= endDateFilter
+    if ( (mTextFilter.isEmpty() || description.contains(mTextFilter, Qt::CaseInsensitive) || title.contains(mTextFilter, Qt::CaseInsensitive))
+         && factStartTime >= mStartDateFilter
+         && factEndTime <= mEndDateFilter
     ) {
         return true;
     } else {
@@ -50,11 +50,11 @@ bool FactSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelInde
 
 void FactSortFilterProxyModel::rowAppened()
 {
-    factTableModel->rowAppened();
+    mFactTableModel->rowAppened();
 }
 
 void FactSortFilterProxyModel::rowRemoved(int row)
 {
-    factTableModel->rowRemoved(row);
+    mFactTableModel->rowRemoved(row);
 }
 

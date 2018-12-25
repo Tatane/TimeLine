@@ -22,9 +22,9 @@ protected:
     bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 
 private:
-    std::unique_ptr<FactTableModel> & factTableModel;
-    QString textFilter;
-    QDate startDateFilter, endDateFilter;
+    std::unique_ptr<FactTableModel> & mFactTableModel;
+    QString mTextFilter;
+    QDate mStartDateFilter, mEndDateFilter;
 
 };
 
