@@ -1,6 +1,7 @@
 #include "facttablemodel.h"
 #include <QFont>
 #include "AlxColors.h"
+#include <QDateTime>
 
 FactTableModel::FactTableModel()
     : vecFacts(nullptr)
@@ -38,7 +39,7 @@ QVariant FactTableModel::data(const QModelIndex &index, int role) const
         switch (index.column()) {
 
         case DataColumn::StartTime :
-            return QVariant(fact->getStartTime().toString().c_str());
+			return QVariant(fact->getStartTime().toString().c_str());
             break;
         case DataColumn::Endtime :
             return QVariant(fact->getEndTime().toString().c_str());
@@ -91,16 +92,16 @@ QVariant FactTableModel::headerData(int section, Qt::Orientation orientation, in
     if (orientation == Qt::Horizontal && role == Qt::DisplayRole) {
         switch (section) {
 
-        case 0:
+		case DataColumn::StartTime:
             return QVariant("START");
             break;
-        case 1:
+		case DataColumn::Endtime:
             return QVariant("END");
             break;
-        case 2:
+		case DataColumn::Title:
             return QVariant("TITLE");
             break;
-        case 3:
+		case DataColumn::Description:
             return QVariant("DESCRIPTION");
             break;
         default:
