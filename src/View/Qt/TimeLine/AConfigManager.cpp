@@ -4,14 +4,16 @@ std::unique_ptr<AConfigManager>  AConfigManager::mConfigManager;
 
 AConfigManager::AConfigManager()
 {
+	readConfigFile();
 }
 
 void AConfigManager::readConfigFile()
 {
 	// TODO : read and parse .\config.ini
 
-	mDateDisplayFormat = "%d %MMM %YYYY"; // TODO To be confirmed
-	mTimeDisplayFormat = "%HH %mm %s"; // TODO To be confirmed
+	mDateDisplayFormat = "dd MMM yyyy"; // TODO To be confirmed
+	mTimeDisplayFormat = "HH mm s"; // TODO To be confirmed
+	mDateTimeDisplayFormat = "dd-MMM-yyyy HH:mm"; // To display a 'h' for the hour, put it between apostrophes: HH'h'mm
 	mDatabaseFileFullPath = "";
 	mDatabaseFileRelativePath = ".\\MaBDD"; // If RelativePath is not empty, ignore FullPath.
 }

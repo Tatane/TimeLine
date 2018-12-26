@@ -10,10 +10,11 @@ public:
 
 	static std::unique_ptr<AConfigManager> & getInstance();
 
-	std::string getDateDisplayFormat() const { return mDateDisplayFormat; }
-	std::string getTimeDisplayFormat() const { return mTimeDisplayFormat; }
-	std::string getDatabaseFileFullPath() const { return mDatabaseFileFullPath; }
-	std::string getDatabaseFileRelativePath() const { return mDatabaseFileRelativePath; }
+	static std::string getDateDisplayFormat() { return getInstance()->mDateDisplayFormat; }
+	static std::string getTimeDisplayFormat() { return getInstance()->mTimeDisplayFormat; }
+	static std::string getDateTimeDisplayFormat() { return getInstance()->mDateTimeDisplayFormat; }
+	static std::string getDatabaseFileFullPath() { return getInstance()->mDatabaseFileFullPath; }
+	static std::string getDatabaseFileRelativePath() { return getInstance()->mDatabaseFileRelativePath; }
 
 private:
 	AConfigManager();
@@ -23,6 +24,7 @@ private:
 
 	std::string mDateDisplayFormat;
 	std::string mTimeDisplayFormat;
+	std::string mDateTimeDisplayFormat;
 	std::string mDatabaseFileFullPath;
 	std::string mDatabaseFileRelativePath;
 };
