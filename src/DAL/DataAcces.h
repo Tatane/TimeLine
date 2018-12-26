@@ -18,6 +18,10 @@ class DataAcces
 private:
 	DataAcces(void);
 	sqlite3 * db;
+
+	std::string convertDateTimeToStorageString(const ADateTime & dateTime) const;
+	ADateTime convertStorageStringToDateTime(std::string str) const;
+
 public:
 	static DataAcces * getInstance();
 	static DataAcces * instance;
