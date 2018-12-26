@@ -1,4 +1,5 @@
 #include "FactSortFilterProxyModel.h"
+#include "AConfigManager.h"
 
 FactSortFilterProxyModel::FactSortFilterProxyModel(std::unique_ptr<FactTableModel> & model)
     :mFactTableModel(model)
@@ -33,14 +34,14 @@ bool FactSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelInde
     QString title = sourceModel()->data(indexTitle).toString();
 
     QModelIndex indexStartTime = sourceModel()->index(source_row, FactTableModel::DataColumn::StartTime, source_parent);
-    QDate factStartTime = sourceModel()->data(indexStartTime).toDate();
+	QDateTime factStartTime = QDateTime::fromString(sourceModel()->data(indexStartTime).toString(), AConfigManager::getDateTimeDisplayFormat().c_str());
 
     QModelIndex indexEndTime = sourceModel()->index(source_row, FactTableModel::DataColumn::Endtime, source_parent);
-    QDate factEndTime = sourceModel()->data(indexEndTime).toDate();
+    QDateTime factEndTime =QDateTime::fromString(sourceModel()->data(indexEndTime).toString(), AConfigManager::getDateTimeDisplayFormat().c_str());
 
     if ( (mTextFilter.isEmpty() || description.contains(mTextFilter, Qt::CaseInsensitive) || title.contains(mTextFilter, Qt::CaseInsensitive))
-         && factStartTime >= mStartDateFilter
-         && factEndTime <= mEndDateFilter
+		&& factStartTime.date() >= mStartDateFilter
+		&& factEndTime.date() <= mEndDateFilter
     ) {
         return true;
     } else {
