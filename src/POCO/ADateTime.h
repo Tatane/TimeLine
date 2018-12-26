@@ -15,18 +15,6 @@ public:
 
 	void set(int year, int month, int day, int hour, int minute, int second);
 	tm get() const { return t;}
-	std::string toString();
-
-	/*
-		format :
-		%Y Year
-		%m Month
-		%d Day
-		%H Hour
-		%M Minute
-		%S Second
-	*/
-	std::string toString(const char * format);
 
     int year() const {return t.tm_year + 1900;}
     int month() const {return t.tm_mon + 1;}
