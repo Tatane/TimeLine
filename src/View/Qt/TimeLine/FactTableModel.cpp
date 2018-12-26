@@ -2,6 +2,7 @@
 #include <QFont>
 #include "AlxColors.h"
 #include <QDateTime>
+#include "AConfigManager.h"
 
 FactTableModel::FactTableModel()
     : vecFacts(nullptr)
@@ -22,12 +23,18 @@ void FactTableModel::setVectFacts(std::vector<Fact *> * iVecFacts)
 
 int FactTableModel::rowCount(const QModelIndex &) const
 {
-    return vecFacts->size();
+    return static_cast<int>(vecFacts->size());
 }
 
-int FactTableModel::columnCount(const QModelIndex &parent) const
+int FactTableModel::columnCount(const QModelIndex &/*parent*/) const
 {
     return 4;
+}
+
+QString convertDateTimeToDisplayString(ADateTime dateTime, QString format)
+{
+	QDateTime dt(QDate(dateTime.year(), dateTime.month(), dateTime.day()), QTime(dateTime.hour(), dateTime.minute(), dateTime.seconde()));
+	return dt.toString(format);
 }
 
 QVariant FactTableModel::data(const QModelIndex &index, int role) const
@@ -39,11 +46,17 @@ QVariant FactTableModel::data(const QModelIndex &index, int role) const
         switch (index.column()) {
 
         case DataColumn::StartTime :
-			return QVariant(fact->getStartTime().toString().c_str());
-            break;
+		{
+			QString format = AConfigManager::getDateTimeDisplayFormat().c_str();
+			return QVariant(convertDateTimeToDisplayString(fact->getStartTime(), format));
+			break;
+		}
         case DataColumn::Endtime :
-            return QVariant(fact->getEndTime().toString().c_str());
-            break;
+		{
+			QString format = AConfigManager::getDateTimeDisplayFormat().c_str();
+			return QVariant(convertDateTimeToDisplayString(fact->getEndTime(), format));
+			break;
+		}
         case DataColumn::Title :
             return QVariant(fact->getTitle().c_str());
             break;
@@ -76,7 +89,8 @@ QVariant FactTableModel::data(const QModelIndex &index, int role) const
 
 void FactTableModel::rowAppened()
 {
-    beginInsertRows(QModelIndex(), vecFacts->size()-1, vecFacts->size()-1);
+	int index = static_cast<int>(vecFacts->size() - 1);
+    beginInsertRows(QModelIndex(), index, index);
     endInsertRows();
 }
 
