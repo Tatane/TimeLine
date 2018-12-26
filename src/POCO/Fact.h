@@ -18,7 +18,9 @@ public:
 	virtual ~Fact(void);
 
     void setId(int id);
+	void setStartTime(const ADateTime & dateTime);
 	void setStartTime(int year, int month, int day, int hour, int minute, int second);
+	void setEndTime(const ADateTime & dateTime);
 	void setEndTime(int year, int month, int day, int hour, int minute, int second);
 	void setTitle(std::string text);
 	void setDescription(std::string text);
@@ -28,8 +30,6 @@ public:
 	ADateTime getEndTime() const;
 	std::string getTitle() const;
 	std::string getDescription() const;
-
-	std::string getText() const;
 
 };
 
