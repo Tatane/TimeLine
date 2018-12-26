@@ -117,7 +117,8 @@ void MainWin::onBtnAddFact()
         facts.add(*pFact);
 
         sortFilterProxyModel->rowAppened();
-        ui->tableView->selectRow(facts.size()-1);
+		int index = static_cast<int>(facts.size() - 1);
+        ui->tableView->selectRow(index);
     }
 }
 
