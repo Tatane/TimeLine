@@ -123,11 +123,11 @@ QVariant FactTableModel::headerData(int section, Qt::Orientation orientation, in
             break;
         }
     }
-    else if (role == Qt::FontRole) {
+    /*else if (role == Qt::FontRole) {
         QFont font;
         font.setBold(true);
         return QVariant(font);
-    }
+    }*/
     else
     {
         return QVariant();
