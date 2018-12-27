@@ -6,6 +6,9 @@
 #include <cassert>
 #include <iomanip>
 #include <sstream>
+#include <qfile>
+#include <qmessagebox>
+#include <qtextstream>
 
 #include "ACategory.h"
 
@@ -56,7 +59,7 @@ bool DataAcces::open()
 void DataAcces::getAllFacts(std::vector<Fact*> & vecFacts)
 {
     sqlite3_stmt * statement;
-    const char * requete = "SELECT * FROM fact";
+    const char * requete = "SELECT * FROM Fact";
     int ret = sqlite3_prepare_v2(db, requete, static_cast<int>(strlen(requete)), &statement, NULL);
     if (ret != SQLITE_OK) {
         std::cerr<<"Error on slite3_prepare_v2"<<std::endl;
@@ -139,32 +142,51 @@ bool DataAcces::updateFact(const Fact & factToUpdate)
 
 }
 
-bool DataAcces::recreateDatabase()
+bool DataAcces::createDatabase()
 {
-    assert(false && "DataAcces::recreateDatabase is not implemented.");
+	QFile fileScriptDatabaseCreation(".\\scriptDatabaseCreation.sql");
+	if (!fileScriptDatabaseCreation.open(QIODevice::ReadOnly))
+	{
+		QMessageBox::information(nullptr, "Error", "Cannot find SQL scheme script for database creation.");
+		return false;
+	}
+	
+	QTextStream textStream(&fileScriptDatabaseCreation);
+	QString creationReq = textStream.readAll();
 
-    // TODO
 
+	if (sqlite3_open_v2("./maBDD", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL) != SQLITE_OK)
+	{
+		QMessageBox::information(nullptr, "Error", "Cannot create database file.");
+		return false;
+	}
 
     sqlite3_stmt * statement;
 
-    const char * creationReq = "CREATE TABLE 'Fact'('startTime' DateTime NOT NULL, 'endTime' DateTime NOT NULL)";
-    //'title'	varchar(100),
-    //'description'	varchar(1000),
-    //'id'	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE
+	std::string sReq = creationReq.trimmed().toStdString();
+	const char * req = sReq.c_str();
+	const char * pzTail = req;
 
+	while (!QString(pzTail).trimmed().isEmpty())
+	{
+		sReq = QString(pzTail).trimmed().toStdString();
+		req = sReq.c_str();
 
-    int ret = sqlite3_prepare_v2(db, creationReq, static_cast<int>(strlen(creationReq)), &statement, NULL);
-    if (ret != SQLITE_OK) {
-        std::cerr<<"Error on slite3_prepare_v2"<<std::endl;
-        exit(-1);
-    }
+		//int ret = sqlite3_prepare_v2(db, req, creationReq.size(), &statement, pzTail);
+		int ret = sqlite3_prepare_v2(db, req, creationReq.size(), &statement, &pzTail);
+		if (ret != SQLITE_OK) {
+			std::cerr << "Error on slite3_prepare_v2" << std::endl;
+			QMessageBox::information(nullptr, "Error", "Error creating database.");
+			sqlite3_close_v2(db);
+			QFile(".\\maBDD").remove();
+			exit(-1);
+		}
 
-    sqlite3_step(statement);
+		int err = sqlite3_step(statement);
+		err = sqlite3_finalize(statement);
+	} 
 
-    sqlite3_finalize(statement);
-
-    return false;
+    return true;
 }
 
 void DataAcces::getDatesBounds(ADateTime &minimumStartDate, ADateTime &maximumEndDate)

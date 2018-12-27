@@ -44,7 +44,7 @@ MainWin::MainWin(QWidget *parent) :
 
 		if (ret == QMessageBox::Yes)
 		{
-			mDatabase->recreateDatabase();
+			mDatabase->createDatabase();
 		}
 		else
 		{

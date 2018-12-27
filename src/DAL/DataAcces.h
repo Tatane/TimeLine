@@ -34,7 +34,7 @@ public:
     void insertFact(Fact & newFact);
     bool deleteFact(const Fact &);
     bool updateFact(const Fact &);
-    bool recreateDatabase() ;
+    bool createDatabase() ;
     void getDatesBounds(ADateTime & minimumStartDate, ADateTime & maximumEndDate);
 	void getAllCategories(ACategoriesCollection * vecCategories);
 
