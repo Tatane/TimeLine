@@ -36,6 +36,9 @@
     </layout>
    </item>
    <item>
+    <widget class="QComboBox" name="comboBoxCategory"/>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
      <item>
       <widget class="QLabel" name="lblDescription">

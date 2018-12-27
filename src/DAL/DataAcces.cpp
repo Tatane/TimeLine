@@ -7,6 +7,8 @@
 #include <iomanip>
 #include <sstream>
 
+#include "ACategory.h"
+
 DataAcces * DataAcces::instance = NULL;
 
 DataAcces::DataAcces()
@@ -103,7 +105,7 @@ bool DataAcces::updateFact(const Fact & factToUpdate)
         sqlite3_stmt * statement;
 
         char requete[256];
-        sprintf(requete, "UPDATE %s SET %s=?, %s=?, %s=?, %s=? WHERE id=?", TABLE_FACT, TABLE_FACT_COLUMN_STARTTIME, TABLE_FACT_COLUMN_ENDTIME, TABLE_FACT_COLUMN_TITLE, TABLE_FACT_COLUMN_DESCRIPTION);
+        sprintf(requete, "UPDATE %s SET %s=?, %s=?, %s=?, %s=?, %s=? WHERE id=?", TABLE_FACT, TABLE_FACT_COLUMN_STARTTIME, TABLE_FACT_COLUMN_ENDTIME, TABLE_FACT_COLUMN_TITLE, TABLE_FACT_COLUMN_DESCRIPTION, TABLE_FACT_COLUMN_CATEGORYID);
 
         int ret = sqlite3_prepare_v2(db, requete, static_cast<int>(strlen(requete)), &statement, NULL);
         if (ret != SQLITE_OK) {
@@ -122,8 +124,10 @@ bool DataAcces::updateFact(const Fact & factToUpdate)
             std::string paramDescription = factToUpdate.getDescription();
             rc = sqlite3_bind_text(statement, 4, paramDescription.c_str(), static_cast<int>(paramDescription.size()), SQLITE_STATIC);
 
-            rc = sqlite3_bind_int(statement, 5, factToUpdate.getId());
+			rc = sqlite3_bind_int(statement, 5, factToUpdate.getCategory()->getId());
 
+            rc = sqlite3_bind_int(statement, 6, factToUpdate.getId());
+			
             rc = sqlite3_step(statement);
 
             rc = sqlite3_finalize(statement);
@@ -210,6 +214,27 @@ void DataAcces::getDatesBounds(ADateTime &minimumStartDate, ADateTime &maximumEn
 
 }
 
+void DataAcces::getAllCategories(ACategoriesCollection * categories)
+{
+	sqlite3_stmt * statement;
+	const char * requete = "SELECT * FROM Category";
+	int ret = sqlite3_prepare_v2(db, requete, static_cast<int>(strlen(requete)), &statement, NULL);
+	if (ret != SQLITE_OK) {
+		std::cerr << "Error on slite3_prepare_v2" << std::endl;
+		exit(-1);
+	}
+
+	while (sqlite3_step(statement) == SQLITE_ROW) {
+		std::unique_ptr<ACategory> category = databaseStatementToCategory(statement);
+		if (category.get() != nullptr)
+		{
+			(*categories)[category->getId()] = std::move(category);
+		}
+	}
+
+	sqlite3_finalize(statement);
+}
+
 void DataAcces::insertFact(Fact & newFact)
 {
 	std::cout<<"insertFact"<<std::endl;
@@ -218,7 +243,7 @@ void DataAcces::insertFact(Fact & newFact)
 	sqlite3_stmt * statement;
 
     char insertReq[256];
-    sprintf(insertReq, "INSERT INTO %s (%s, %s, %s, %s) VALUES (?, ?, ?, ?)", TABLE_FACT, TABLE_FACT_COLUMN_STARTTIME, TABLE_FACT_COLUMN_ENDTIME, TABLE_FACT_COLUMN_TITLE, TABLE_FACT_COLUMN_DESCRIPTION);
+    sprintf(insertReq, "INSERT INTO %s (%s, %s, %s, %s, %s) VALUES (?, ?, ?, ?, ?)", TABLE_FACT, TABLE_FACT_COLUMN_STARTTIME, TABLE_FACT_COLUMN_ENDTIME, TABLE_FACT_COLUMN_TITLE, TABLE_FACT_COLUMN_DESCRIPTION, TABLE_FACT_COLUMN_CATEGORYID);
     int rc = sqlite3_prepare_v2(db, insertReq, static_cast<int>(strlen(insertReq)), &statement, NULL);
 
     std::string paramStartTime = convertDateTimeToStorageString(newFact.getStartTime());
@@ -232,7 +257,14 @@ void DataAcces::insertFact(Fact & newFact)
 
     std::string paramDescription = newFact.getDescription();
     rc = sqlite3_bind_text(statement, 4, paramDescription.c_str(), static_cast<int>(paramDescription.size()), SQLITE_STATIC);
-	
+
+	int paramCategoryId = 0; // 0 by default.
+	if (newFact.getCategory() != nullptr)
+	{
+		paramCategoryId = newFact.getCategory()->getId();
+	}
+	rc = sqlite3_bind_int(statement, 5, paramCategoryId);
+
     rc = sqlite3_step(statement);
 
     rc = sqlite3_finalize(statement);
@@ -296,5 +328,41 @@ void DataAcces::databaseStatementToFact(sqlite3_stmt * statement, Fact * fact)
         //sscanf((const char*)val, "%s")
         fact->setDescription((const char*)val);
     }
+
+	int valInt = sqlite3_column_int(statement, Columns_Fact_Table::categoryIdField);
+	if (valInt != 0) { // HOW TO CHECK RESULT VALIDITY ?
+		std::cout << "Field " << Columns_Fact_Table::categoryIdField << " = " << valInt << std::endl;
+		//sscanf((const char*)val, "%s")
+		if (ACategories::getCategories().count(valInt) == 1)
+		{
+
+			std::shared_ptr<ACategory> & category = ACategories::getCategories().at(valInt);
+			fact->setCategory(category);
+		}
+	}
+}
+
+std::unique_ptr<ACategory> DataAcces::databaseStatementToCategory(sqlite3_stmt * stmt)
+{
+	std::unique_ptr<ACategory> category = std::make_unique<ACategory>();
+
+	const unsigned char * val = sqlite3_column_text(stmt, Columns_Category_Table::idField);
+	if (val != 0) {
+		int id = 0;
+		std::cout << "Field " << Columns_Category_Table::idField << " = " << val << std::endl;
+		sscanf((const char *)val, "%d", &id);
+		category->setId(id);
+	}
+	else {
+		std::cout << "No value" << std::endl;
+	}
+
+	val = sqlite3_column_text(stmt, Columns_Category_Table::nameField);
+	if (val != 0) {
+		std::cout << "Field " << Columns_Category_Table::nameField << " = " << val << std::endl;
+		category->setName((const char*)val);
+	}
+
+	return category;
 }
 

@@ -4,6 +4,7 @@
 #include <ctime>
 #include <string>
 #include "ADateTime.h"
+#include "ACategory.h"
 
 class Fact
 {
@@ -12,6 +13,7 @@ class Fact
 	ADateTime endTime;
 	std::string title;
 	std::string description;
+	std::shared_ptr<ACategory> mCategory;
 
 public:
 	Fact(void);
@@ -24,12 +26,14 @@ public:
 	void setEndTime(int year, int month, int day, int hour, int minute, int second);
 	void setTitle(std::string text);
 	void setDescription(std::string text);
+	void setCategory(std::shared_ptr<ACategory> category) { mCategory = category; }
 
     int getId() const;
 	ADateTime getStartTime() const;
 	ADateTime getEndTime() const;
 	std::string getTitle() const;
 	std::string getDescription() const;
+	std::shared_ptr<ACategory> getCategory() const { return mCategory; }
 
 };
 

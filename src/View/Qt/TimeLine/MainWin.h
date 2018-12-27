@@ -8,6 +8,7 @@
 #include "Facts.h"
 #include "DAL/DataAcces.h"
 #include <memory>
+#include "ACategory.h"
 
 namespace Ui {
 class MainWin;
@@ -32,6 +33,7 @@ public:
 private:
     Ui::MainWin *ui;
     Facts facts;
+	std::vector<std::unique_ptr<ACategory>> mCategories;
     std::unique_ptr<FactTableModel> factTableModel;
     std::unique_ptr<FactSortFilterProxyModel> sortFilterProxyModel;
 	DataAcces* mDatabase;

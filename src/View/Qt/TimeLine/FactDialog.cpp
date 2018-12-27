@@ -3,6 +3,8 @@
 #include "POCO/Fact.h"
 #include "DAL/DataAcces.h"
 
+#include "ACategory.h"
+
 FactDialog::FactDialog(Fact **fact, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::FactDialog),
@@ -29,6 +31,12 @@ FactDialog::~FactDialog()
 
 void FactDialog::initializeFields()
 {
+	ui->comboBoxCategory->addItem("");
+	for (auto & pair : ACategories::getCategories())
+	{
+		ui->comboBoxCategory->addItem(pair.second->getName().c_str(), pair.first);
+	}
+
     if (*pEditedFact != NULL) {
         Fact * fact = *pEditedFact;
         ui->lineEditTitle->setText(QString::fromStdString(fact->getTitle()));
@@ -42,6 +50,16 @@ void FactDialog::initializeFields()
         ui->startTimeEdit->setTime(QTime(fact->getStartTime().get().tm_hour, fact->getStartTime().get().tm_min, fact->getStartTime().get().tm_sec));
 
         ui->endTimeEdit->setTime(QTime(fact->getEndTime().get().tm_hour, fact->getEndTime().get().tm_min, fact->getEndTime().get().tm_sec));
+
+
+		if ((*pEditedFact)->getCategory() != nullptr)
+		{
+			ui->comboBoxCategory->setCurrentText((*pEditedFact)->getCategory()->getName().c_str());
+		}
+
+		
+
+		
 
     } else {
         ui->startDateEdit->setDateTime(QDateTime::currentDateTime());
@@ -74,6 +92,13 @@ void FactDialog::onBtnOk()
                           ui->startTimeEdit->time().hour(), ui->startTimeEdit->time().minute(), ui->startTimeEdit->time().second());
     fact->setEndTime(ui->endDateEdit->date().year(), ui->endDateEdit->date().month(), ui->endDateEdit->date().day(),
                           ui->endTimeEdit->time().hour(), ui->endTimeEdit->time().minute(), ui->endTimeEdit->time().second());
+	
+	int comboCategoryCurrentSelectedId = ui->comboBoxCategory->currentData().toInt();
+	if (ACategories::getCategories().count(comboCategoryCurrentSelectedId) == 1)
+	{
+		std::shared_ptr<ACategory> category = ACategories::getCategories().at(comboCategoryCurrentSelectedId);
+		fact->setCategory(category);
+	}
 
     // UPdate ou INSERT in DB
     if (*pEditedFact == NULL) {

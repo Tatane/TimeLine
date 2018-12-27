@@ -67,6 +67,9 @@ void MainWin::loadModelData()
 {
 	if (mDatabase)
 	{
+		// Read from database all Categories :
+		mDatabase->getAllCategories(&ACategories::getCategories());
+
 		// Read from database and fill the Model :
 		mDatabase->getAllFacts(*(facts.getVecFacts()));
 
