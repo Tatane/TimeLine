@@ -29,6 +29,9 @@ MainWin::MainWin(QWidget *parent) :
     connect(ui->dateEditStartTime, SIGNAL(dateChanged(QDate)), this, SLOT(onDatesFilterChanged()));
     connect(ui->dateEditEndTime, SIGNAL(dateChanged(QDate)), this, SLOT(onDatesFilterChanged()));
 
+	// Enable Maximize window button :
+	setWindowFlag(Qt::WindowMaximizeButtonHint);
+
 
 	mDatabase = DataAcces::getInstance();
 	if ( ! mDatabase->open() )
