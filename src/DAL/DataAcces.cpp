@@ -257,6 +257,35 @@ void DataAcces::getAllCategories(ACategoriesCollection * categories)
 	sqlite3_finalize(statement);
 }
 
+void DataAcces::insertCategory(std::shared_ptr<ACategory>& category)
+{
+	sqlite3_stmt * statement;
+
+	char requete[256];
+	sprintf(requete, "INSERT INTO %s (%s) VALUES (?)", TABLE_CATEGORY, TABLE_CATEGORY_COLUMN_NAME);
+	sqlite3_prepare_v2(db, requete, static_cast<int>(strlen(requete)), &statement, nullptr);
+
+	sqlite3_bind_text(statement, 1, category->getName().c_str(), static_cast<int>(strlen(category->getName().c_str())), SQLITE_STATIC);
+
+	sqlite3_step(statement);
+
+	sqlite3_finalize(statement);
+
+	// retrieve new id field (auto increment) :
+	char req[256];
+	sprintf(req, "SELECT seq FROM sqlite_sequence WHERE name='%s'", TABLE_CATEGORY);
+	int rc = sqlite3_prepare_v2(db, req, static_cast<int>(strlen(req)), &statement, NULL);
+
+	rc = sqlite3_step(statement);
+	if (rc == SQLITE_ROW)
+	{
+		int val = sqlite3_column_int(statement, 0);
+		category->setId(val);
+	}
+
+	rc = sqlite3_finalize(statement);
+}
+
 void DataAcces::insertFact(Fact & newFact)
 {
 	std::cout<<"insertFact"<<std::endl;

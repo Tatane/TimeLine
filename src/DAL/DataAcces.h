@@ -14,6 +14,9 @@ static const char * TABLE_FACT_COLUMN_TITLE = "title";
 static const char * TABLE_FACT_COLUMN_DESCRIPTION = "description";
 static const char * TABLE_FACT_COLUMN_CATEGORYID = "categoryId";
 
+static const char * TABLE_CATEGORY = "Category";
+static const char * TABLE_CATEGORY_COLUMN_NAME = "name";
+
 class DataAcces
 {
 private:
@@ -37,6 +40,8 @@ public:
     bool createDatabase() ;
     void getDatesBounds(ADateTime & minimumStartDate, ADateTime & maximumEndDate);
 	void getAllCategories(ACategoriesCollection * vecCategories);
+
+	void insertCategory(std::shared_ptr<ACategory> & category);
 
     struct Columns_Fact_Table{
         enum {

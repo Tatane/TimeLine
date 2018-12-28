@@ -4,6 +4,7 @@
 #include "DAL/DataAcces.h"
 
 #include "ACategory.h"
+#include "CategoryDialog.h"
 
 FactDialog::FactDialog(Fact **fact, QWidget *parent) :
     QDialog(parent),
@@ -16,6 +17,7 @@ FactDialog::FactDialog(Fact **fact, QWidget *parent) :
     connect(ui->btnOK, SIGNAL(clicked(bool)), this, SLOT(onBtnOk()));
     connect(ui->chkAllDayStartTime, SIGNAL(toggled(bool)), ui->startTimeEdit, SLOT(setDisabled(bool)));
     connect(ui->chkAllDayEndTime, SIGNAL(toggled(bool)), ui->endTimeEdit, SLOT(setDisabled(bool)));
+	connect(ui->btnManageCategories, SIGNAL(clicked(bool)), this, SLOT(onBtnManageCategories()));
 
     initializeFields();
 
@@ -112,4 +114,10 @@ void FactDialog::onBtnOk()
     accept();
 
 //    close();
+}
+
+void FactDialog::onBtnManageCategories()
+{
+	CategoryDialog categoryDialog;
+	categoryDialog.exec();
 }

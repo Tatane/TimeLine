@@ -25,6 +25,7 @@ private:
 private slots:
     void onBtnCancel();
     void onBtnOk();
+	void onBtnManageCategories();
 };
 
 #endif // FACTDIALOG_H
