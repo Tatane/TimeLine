@@ -15,7 +15,7 @@ static const char * TABLE_FACT_COLUMN_DESCRIPTION = "description";
 static const char * TABLE_FACT_COLUMN_CATEGORYID = "categoryId";
 
 static const char * TABLE_CATEGORY = "Category";
-static const char * TABLE_CATEGORY_COLUMN_NAME = "name";
+static const char * TABLE_CATEGORY_COLUMN_NAME = "Name";
 
 class DataAcces
 {
