@@ -42,6 +42,7 @@ public:
 	void getAllCategories(ACategoriesCollection * vecCategories);
 
 	void insertCategory(std::shared_ptr<ACategory> & category);
+	bool deleteCategory(std::shared_ptr<ACategory> & category);
 
     struct Columns_Fact_Table{
         enum {

@@ -22,7 +22,7 @@
         <widget class="QLineEdit" name="lineEditCategory"/>
        </item>
        <item>
-        <widget class="QListView" name="listViewCategories"/>
+        <widget class="QListWidget" name="listWidgetCategories"/>
        </item>
       </layout>
      </item>
@@ -32,6 +32,13 @@
         <widget class="QPushButton" name="btnAddCategory">
          <property name="text">
           <string>Create</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnDelete">
+         <property name="text">
+          <string>Delete</string>
          </property>
         </widget>
        </item>
