@@ -309,6 +309,35 @@ bool DataAcces::deleteCategory(std::shared_ptr<ACategory>& category)
 	return false;
 }
 
+bool DataAcces::updateCategory(std::shared_ptr<ACategory>& category)
+{
+	if (category->getId() > 0) {
+
+		sqlite3_stmt * statement;
+
+		char requete[256];
+		sprintf(requete, "UPDATE %s SET %s=? WHERE id=?", TABLE_CATEGORY, TABLE_CATEGORY_COLUMN_NAME);
+
+		int ret = sqlite3_prepare_v2(db, requete, static_cast<int>(strlen(requete)), &statement, NULL);
+		if (ret != SQLITE_OK) {
+			std::cerr << "Error on slite3_prepare_v2" << std::endl;
+			exit(-1);
+		}
+		else {
+			int rc = sqlite3_bind_text(statement, 1, category->getName().c_str(), static_cast<int>(category->getName().size()), SQLITE_TRANSIENT);
+
+			rc = sqlite3_bind_int(statement, 2, category->getId());
+
+			rc = sqlite3_step(statement);
+
+			rc = sqlite3_finalize(statement);
+
+			return true;
+		}
+	}
+	return false;
+}
+
 void DataAcces::insertFact(Fact & newFact)
 {
 	std::cout<<"insertFact"<<std::endl;

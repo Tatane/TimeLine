@@ -11,6 +11,8 @@ CategoryDialog::CategoryDialog(QWidget *parent)
 
 	connect(ui.btnAddCategory, SIGNAL(clicked(bool)), this, SLOT(onClickBtnAddCategory()));
 	connect(ui.btnDelete, SIGNAL(clicked(bool)), this, SLOT(onClickBtnDelete()));
+	connect(ui.btnEdit, SIGNAL(clicked(bool)), this, SLOT(onClickBtnEdit()));
+	connect(ui.listWidgetCategories, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(onItemChanged(QListWidgetItem *)));
 
 	displayCategories();
 }
@@ -33,7 +35,7 @@ void CategoryDialog::displayCategories()
 
 void CategoryDialog::onClickBtnDelete()
 {
-	AListWidgetItemCategory * listWidgetCategory = dynamic_cast<AListWidgetItemCategory*>(ui.listWidgetCategories->selectedItems().first());
+	AListWidgetItemCategory * listWidgetCategory = dynamic_cast<AListWidgetItemCategory*>(ui.listWidgetCategories->currentItem());
 	if (listWidgetCategory != nullptr)
 	{
 		if (QMessageBox::Ok == QMessageBox::question(this, "Delete", "Category '" + QString(listWidgetCategory->getCategory()->getName().c_str()) + "' will be deleted.", QMessageBox::Ok | QMessageBox::Cancel))
@@ -45,6 +47,36 @@ void CategoryDialog::onClickBtnDelete()
 				displayCategories();
 			}
 		}
+	}
+}
+
+void CategoryDialog::onClickBtnEdit()
+{
+	AListWidgetItemCategory * item = dynamic_cast<AListWidgetItemCategory*>(ui.listWidgetCategories->currentItem());
+	if (item != nullptr)
+	{
+		std::shared_ptr<ACategory> category = item->getCategory();
+		QString oldName = category->getName().c_str();
+		QString newName = ui.lineEditCategory->text();
+
+		if (QMessageBox::Ok == QMessageBox::question(this, "", "Category '" + oldName + "' will be updated to '" + newName + "'.", QMessageBox::Ok | QMessageBox::Cancel))
+		{
+			category->setName(newName.toStdString());
+			if (DataAcces::getInstance()->updateCategory(category))
+			{
+				QMessageBox::information(this, "", "Category '" + oldName + "' has been updated to '" + newName +"'");
+				displayCategories();
+			}
+		}
+
+	}
+}
+
+void CategoryDialog::onItemChanged(QListWidgetItem * current)
+{
+	if (current != nullptr)
+	{
+		ui.lineEditCategory->setText(current->text());
 	}
 }
 

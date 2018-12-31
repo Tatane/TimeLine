@@ -40,6 +40,8 @@ private:
 private slots:
 	void onClickBtnAddCategory();
 	void onClickBtnDelete();
+	void onClickBtnEdit();
+	void onItemChanged(QListWidgetItem *current);
 
 
 };

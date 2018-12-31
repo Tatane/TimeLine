@@ -43,6 +43,7 @@ public:
 
 	void insertCategory(std::shared_ptr<ACategory> & category);
 	bool deleteCategory(std::shared_ptr<ACategory> & category);
+	bool updateCategory(std::shared_ptr<ACategory> & category);
 
     struct Columns_Fact_Table{
         enum {
