@@ -6,6 +6,8 @@
 #include "sqlite3.h"
 #include "POCO/ACategory.h"
 
+static const char * DATABASE_FILE_NAME = "maBDD.sqlite";
+
 static const char * TABLE_FACT = "Fact";
 static const char * TABLE_FACT_COLUMN_ID = "id";
 static const char * TABLE_FACT_COLUMN_STARTTIME = "startTime";

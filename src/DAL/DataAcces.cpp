@@ -53,7 +53,7 @@ DataAcces::~DataAcces(void)
 
 bool DataAcces::open()
 {
-	return (sqlite3_open_v2("maBDD", &db, SQLITE_OPEN_READWRITE, NULL) == SQLITE_OK);
+    return (sqlite3_open_v2(DATABASE_FILE_NAME, &db, SQLITE_OPEN_READWRITE, NULL) == SQLITE_OK);
 }
 
 void DataAcces::getAllFacts(std::vector<Fact*> & vecFacts)
@@ -155,7 +155,7 @@ bool DataAcces::createDatabase()
 	QString creationReq = textStream.readAll();
 
 
-	if (sqlite3_open_v2("./maBDD", &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL) != SQLITE_OK)
+    if (sqlite3_open_v2(DATABASE_FILE_NAME, &db, SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE, NULL) != SQLITE_OK)
 	{
 		QMessageBox::information(nullptr, "Error", "Cannot create database file.");
 		return false;
@@ -178,7 +178,7 @@ bool DataAcces::createDatabase()
 			std::cerr << "Error on slite3_prepare_v2" << std::endl;
 			QMessageBox::information(nullptr, "Error", "Error creating database.");
 			sqlite3_close_v2(db);
-			QFile(".\\maBDD").remove();
+            QFile(DATABASE_FILE_NAME).remove();
 			exit(-1);
 		}
 
