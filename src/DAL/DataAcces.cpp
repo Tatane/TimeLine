@@ -10,7 +10,7 @@
 #include <qmessagebox>
 #include <qtextstream>
 
-#include "ACategory.h"
+#include "POCO/ACategory.h"
 
 DataAcces * DataAcces::instance = NULL;
 

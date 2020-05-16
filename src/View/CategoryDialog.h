@@ -2,7 +2,7 @@
 
 #include <QDialog>
 #include "ui_CategoryDialog.h"
-#include "ACategory.h"
+#include "POCO/ACategory.h"
 
 class AListWidgetItemCategory : public QListWidgetItem
 {

@@ -1,8 +1,8 @@
-#include "facttablemodel.h"
+#include "View/FactTableModel.h"
 #include <QFont>
 #include "AlxColors.h"
 #include <QDateTime>
-#include "AConfigManager.h"
+#include "POCO/AConfigManager.h"
 
 FactTableModel::FactTableModel()
     : vecFacts(nullptr)

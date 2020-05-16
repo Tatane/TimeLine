@@ -5,10 +5,10 @@
 
 #include "FactTableModel.h"
 #include "FactSortFilterProxyModel.h"
-#include "Facts.h"
+#include "POCO/Facts.h"
 #include "DAL/DataAcces.h"
 #include <memory>
-#include "ACategory.h"
+#include "POCO/ACategory.h"
 
 namespace Ui {
 class MainWin;

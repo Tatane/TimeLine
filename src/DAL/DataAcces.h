@@ -4,7 +4,7 @@
 #include <vector>
 #include "POCO/Fact.h"
 #include "sqlite3.h"
-#include "ACategory.h"
+#include "POCO/ACategory.h"
 
 static const char * TABLE_FACT = "Fact";
 static const char * TABLE_FACT_COLUMN_ID = "id";

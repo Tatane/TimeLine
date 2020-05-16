@@ -5,8 +5,5 @@
 *.user
 *.filters
 *.stash
-/src/View/Qt/TimeLine/release
-/src/View/Qt/TimeLine/x64/Debug
-/src/View/Qt/TimeLine/GeneratedFiles
-/src/View/Qt/TimeLine/debug
-/src/View/Qt/TimeLine/.vs/TimeLine/v15
+/bin/release
+/bin/debug

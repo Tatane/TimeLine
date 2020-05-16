@@ -1,5 +1,5 @@
 #include "CategoryDialog.h"
-#include "ACategory.h"
+#include "POCO/ACategory.h"
 #include "DAL/DataAcces.h"
 #include <QMessageBox>
 #include <QListWidget>

@@ -1,5 +1,5 @@
 #include "FactSortFilterProxyModel.h"
-#include "AConfigManager.h"
+#include "POCO/AConfigManager.h"
 
 FactSortFilterProxyModel::FactSortFilterProxyModel(std::unique_ptr<FactTableModel> & model)
     :mFactTableModel(model)

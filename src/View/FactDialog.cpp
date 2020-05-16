@@ -3,7 +3,7 @@
 #include "POCO/Fact.h"
 #include "DAL/DataAcces.h"
 
-#include "ACategory.h"
+#include "POCO/ACategory.h"
 #include "CategoryDialog.h"
 
 FactDialog::FactDialog(Fact **fact, QWidget *parent) :

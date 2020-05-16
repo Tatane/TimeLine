@@ -1,0 +1,10 @@
+TimeLine
+
+Application qui permet de stocker et visualiser tous les evenements et périodes qui se passent dans la vie de l'utilisateur.
+Par exemple des vacances, des dates marquantes, les appartements habités, les périodes d'éducation, les relations amoureuses.
+Chaque évenement a une date de début et de fin, éventuellement des heures aussi un titre, une description longue, une ou plusieurs categories, un ou plusieurs liens vers d'autres evenements.
+
+
+Les données sont stockées dans un systeme de base de données. Peut-être en texte plein, mais plutot en Sqlite. LE plus important est la pérénité des données. A tout moment, et "pour tujours" on doit pouvoir récuprer les données. Meme si le SGBD devient obsolete, si les drivers disparaissent, si ..., on doit pouvoir extraire les données.
+Pour ça le mieux serait du texte plein, mais c'est moins pratique que du sql.
+Plusieurs fichiers texte : un fichier par table ?
