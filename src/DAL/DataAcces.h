@@ -14,10 +14,13 @@ static const char * TABLE_FACT_COLUMN_STARTTIME = "startTime";
 static const char * TABLE_FACT_COLUMN_ENDTIME = "endTime";
 static const char * TABLE_FACT_COLUMN_TITLE = "title";
 static const char * TABLE_FACT_COLUMN_DESCRIPTION = "description";
-static const char * TABLE_FACT_COLUMN_CATEGORYID = "categoryId";
 
 static const char * TABLE_CATEGORY = "Category";
 static const char * TABLE_CATEGORY_COLUMN_NAME = "Name";
+
+static const char * TABLE_FACTCATEGORY = "FactCategory";
+static const char * TABLE_FACTCATEGORY_FACTID = "FactId";
+static const char * TABLE_FACTCATEGORY_CATEGORYID = "CategoryId";
 
 class DataAcces
 {
@@ -43,6 +46,8 @@ public:
     void getDatesBounds(ADateTime & minimumStartDate, ADateTime & maximumEndDate);
 	void getAllCategories(ACategoriesCollection * vecCategories);
 
+    void getAllFactCategory(std::map<int, std::vector<int> > &allFactCategory);
+
 	void insertCategory(std::shared_ptr<ACategory> & category);
 	bool deleteCategory(std::shared_ptr<ACategory> & category);
 	bool updateCategory(std::shared_ptr<ACategory> & category);
@@ -67,8 +72,19 @@ public:
 		};
 	};
 
+    struct Columns_FactCategory_Table
+    {
+        enum
+        {
+            factIdField,
+            categoryIdField,
+        };
+    };
+
 	void databaseStatementToFact(sqlite3_stmt * stmt, Fact * fact);
 	std::unique_ptr<ACategory> databaseStatementToCategory(sqlite3_stmt * stmt);
+    void databaseStatementToFactCategory(sqlite3_stmt * stmt, int & factId, int &categoryId);
+
 
 };
 
