@@ -2,3 +2,4 @@
 002 : Renommer les classes perso avec un suffixe A.
 003 : Renommer Fact en AEvent ou AHappening
 004 : Cancel de CategoryDialog ne fonctionne pas.
+005 : Mettre en place un cache pour ne pas relire la BDD ?

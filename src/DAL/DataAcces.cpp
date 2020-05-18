@@ -127,13 +127,22 @@ bool DataAcces::updateFact(const Fact & factToUpdate)
             std::string paramDescription = factToUpdate.getDescription();
             rc = sqlite3_bind_text(statement, 4, paramDescription.c_str(), static_cast<int>(paramDescription.size()), SQLITE_STATIC);
 
-			rc = sqlite3_bind_int(statement, 5, factToUpdate.getCategory()->getId());
-
             rc = sqlite3_bind_int(statement, 6, factToUpdate.getId());
 			
             rc = sqlite3_step(statement);
 
             rc = sqlite3_finalize(statement);
+
+            // First, delete all previous FactCategory for this Fact :
+            for (const auto & category : factToUpdate.getCategories())
+            {
+                deleteFactCategory(factToUpdate.getId(), category->getId());
+            }
+            // Insert all FactCategory for this Fact :
+            for (const auto & category : factToUpdate.getCategories())
+            {
+                insertFactCategory(factToUpdate.getId(), category->getId());
+            }
 
             return true;
         }
@@ -271,15 +280,41 @@ void DataAcces::getAllFactCategory(std::map<int, std::vector<int> > & allFactCat
         int factId = 0;
         int categoryId = 0;
         databaseStatementToFactCategory(statement, factId, categoryId);
-        if (allFactCategory.count(factId) == 0)
-        {
-            allFactCategory[factId] = std::vector<int>(categoryId);
-        }
-        else
-        {
-            allFactCategory[factId].push_back(categoryId);
-        }
+        allFactCategory[factId].push_back(categoryId);
     }
+}
+
+void DataAcces::insertFactCategory(int factId, int categoryId)
+{
+    sqlite3_stmt * statement;
+    char requete[256];
+    sprintf(requete, "INSERT INTO %s (%s, %s) VALUES (?, ?)", TABLE_FACTCATEGORY, TABLE_FACTCATEGORY_FACTID, TABLE_FACTCATEGORY_CATEGORYID);
+    int rc = sqlite3_prepare_v2(db, requete, static_cast<int>(strlen(requete)), &statement, nullptr);
+
+    rc = sqlite3_bind_int(statement, 1, factId);
+    rc = sqlite3_bind_int(statement, 2, categoryId);
+
+    rc = sqlite3_step(statement);
+
+    rc = sqlite3_finalize(statement);
+
+}
+
+bool DataAcces::deleteFactCategory(int factId, int categoryId)
+{
+    sqlite3_stmt * statement;
+    char requete[256];
+    sprintf(requete, "DELETE FROM %s WHERE %s=? AND %s=?", TABLE_FACTCATEGORY, TABLE_FACTCATEGORY_FACTID, TABLE_FACTCATEGORY_CATEGORYID);
+    int rc = sqlite3_prepare_v2(db, requete, static_cast<int>(strlen(requete)), &statement, nullptr);
+
+    rc = sqlite3_bind_int(statement, 1, factId);
+    rc = sqlite3_bind_int(statement, 2, categoryId);
+
+    rc = sqlite3_step(statement);
+
+    rc = sqlite3_finalize(statement);
+
+    return rc == SQLITE_OK;
 }
 
 void DataAcces::insertCategory(std::shared_ptr<ACategory>& category)
@@ -385,15 +420,7 @@ void DataAcces::insertFact(Fact & newFact)
 
     std::string paramDescription = newFact.getDescription();
     rc = sqlite3_bind_text(statement, 4, paramDescription.c_str(), static_cast<int>(paramDescription.size()), SQLITE_STATIC);
-/*
- TODO Remplir table FACTCATEGORY
-	int paramCategoryId = 0; // 0 by default.
-	if (newFact.getCategory() != nullptr)
-	{
-		paramCategoryId = newFact.getCategory()->getId();
-	}
-	rc = sqlite3_bind_int(statement, 5, paramCategoryId);
-*/
+
     rc = sqlite3_step(statement);
 
     rc = sqlite3_finalize(statement);
@@ -411,6 +438,12 @@ void DataAcces::insertFact(Fact & newFact)
     }
 
     rc = sqlite3_finalize(statement);
+
+    // Insert all FactCategory for this Fact :
+    for (const auto & category : newFact.getCategories())
+    {
+        insertFactCategory(newFact.getId(), category->getId());
+    }
 	
 }
 

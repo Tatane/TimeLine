@@ -1,5 +1,5 @@
 #include "FactDialog.h"
-#include "ui_FactDialog.h"
+#include "ui_factdialog.h"
 #include "POCO/Fact.h"
 #include "DAL/DataAcces.h"
 
@@ -20,10 +20,6 @@ FactDialog::FactDialog(Fact **fact, QWidget *parent) :
 	connect(ui->btnManageCategories, SIGNAL(clicked(bool)), this, SLOT(onBtnManageCategories()));
 
     initializeFields();
-
-
-
-
 }
 
 FactDialog::~FactDialog()
@@ -53,12 +49,12 @@ void FactDialog::initializeFields()
 
         ui->endTimeEdit->setTime(QTime(fact->getEndTime().get().tm_hour, fact->getEndTime().get().tm_min, fact->getEndTime().get().tm_sec));
 
-
+/* TODO
 		if ((*pEditedFact)->getCategory() != nullptr)
 		{
 			ui->comboBoxCategory->setCurrentText((*pEditedFact)->getCategory()->getName().c_str());
 		}
-
+*/
 		
 
 		
@@ -94,14 +90,14 @@ void FactDialog::onBtnOk()
                           ui->startTimeEdit->time().hour(), ui->startTimeEdit->time().minute(), ui->startTimeEdit->time().second());
     fact->setEndTime(ui->endDateEdit->date().year(), ui->endDateEdit->date().month(), ui->endDateEdit->date().day(),
                           ui->endTimeEdit->time().hour(), ui->endTimeEdit->time().minute(), ui->endTimeEdit->time().second());
-	
+        /* TODO
 	int comboCategoryCurrentSelectedId = ui->comboBoxCategory->currentData().toInt();
 	if (ACategories::getCategories().count(comboCategoryCurrentSelectedId) == 1)
 	{
 		std::shared_ptr<ACategory> category = ACategories::getCategories().at(comboCategoryCurrentSelectedId);
 		fact->setCategory(category);
 	}
-
+*/
     // UPdate ou INSERT in DB
     if (*pEditedFact == NULL) {
         DataAcces::getInstance()->insertFact(*fact);

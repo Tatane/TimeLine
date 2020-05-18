@@ -31,7 +31,8 @@ public:
             StartTime,
             Endtime,
             Title,
-            Description
+            Description,
+            Categories,
         };
     };
 

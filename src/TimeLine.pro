@@ -19,6 +19,7 @@ SOURCES += \
     DAL/DataAcces.cpp \
     DAL/sqlite3.c \
     POCO/ADateTime.cpp \
+    POCO/AFactCategory.cpp \
     POCO/Fact.cpp \
     POCO/ACategory.cpp \
     POCO/AConfigManager.cpp \
@@ -35,6 +36,7 @@ HEADERS += \
     DAL/DataAcces.h \
     DAL/sqlite3.h \
     POCO/ADateTime.h \
+    POCO/AFactCategory.h \
     POCO/Fact.h \
     POCO/ACategory.h \
     POCO/AConfigManager.h \

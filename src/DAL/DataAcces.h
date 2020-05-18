@@ -46,11 +46,14 @@ public:
     void getDatesBounds(ADateTime & minimumStartDate, ADateTime & maximumEndDate);
 	void getAllCategories(ACategoriesCollection * vecCategories);
 
-    void getAllFactCategory(std::map<int, std::vector<int> > &allFactCategory);
 
 	void insertCategory(std::shared_ptr<ACategory> & category);
 	bool deleteCategory(std::shared_ptr<ACategory> & category);
 	bool updateCategory(std::shared_ptr<ACategory> & category);
+
+    void getAllFactCategory(std::map<int, std::vector<int> > &allFactCategory);
+    void insertFactCategory(int factId, int categoryId);
+    bool deleteFactCategory(int factId, int categoryId);
 
     struct Columns_Fact_Table{
         enum {

@@ -1,5 +1,6 @@
 #include "Fact.h"
 #include <cstdio>
+#include "AFactCategory.h"
 
 Fact::Fact(void)
     : id(0)
@@ -37,7 +38,23 @@ std::string Fact::getTitle() const
 
 std::string Fact::getDescription() const
 {
-	return description;
+    return description;
+}
+
+std::vector<std::shared_ptr<ACategory> > Fact::getCategories() const
+{
+    std::vector<std::shared_ptr<ACategory> > ret;
+    if (AFactCategories::mFactCategories.count(getId()) > 0)
+    {
+        for (const auto & categoryId : AFactCategories::mFactCategories.at(getId()))
+        {
+            if (ACategories::getCategories().count(categoryId) > 0)
+            {
+                ret.push_back(ACategories::getCategories().at(categoryId));
+            }
+        }
+    }
+    return ret;
 }
 
 void Fact::setId(int id)

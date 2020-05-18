@@ -28,7 +28,7 @@ int FactTableModel::rowCount(const QModelIndex &) const
 
 int FactTableModel::columnCount(const QModelIndex &/*parent*/) const
 {
-    return 4;
+    return 5;
 }
 
 QString convertDateTimeToDisplayString(ADateTime dateTime, QString format)
@@ -63,6 +63,16 @@ QVariant FactTableModel::data(const QModelIndex &index, int role) const
         case DataColumn::Description :
             return QVariant(fact->getDescription().c_str());
             break;
+        case DataColumn::Categories :
+        {
+            QString val;
+            for(auto category : fact->getCategories())
+            {
+                val.append(category->getName().c_str());
+            }
+            return val;
+            break;
+        }
         default:
             return QVariant();
             break;

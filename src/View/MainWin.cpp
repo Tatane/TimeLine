@@ -5,6 +5,7 @@
 #include "DAL/DataAcces.h"
 #include "FactTableModel.h"
 #include "FactDialog.h"
+#include "POCO/AFactCategory.h"
 #include <algorithm>
 #include <QSortFilterProxyModel>
 
@@ -70,6 +71,9 @@ void MainWin::loadModelData()
 {
 	if (mDatabase)
 	{
+        // Read from database all association FactCategory
+        mDatabase->getAllFactCategory(AFactCategories::mFactCategories);
+
 		// Read from database all Categories :
 		mDatabase->getAllCategories(&ACategories::getCategories());
 
