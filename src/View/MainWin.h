@@ -1,7 +1,8 @@
 #ifndef MAINWIN_H
 #define MAINWIN_H
 
-#include <QDialog>
+#include <QMainWindow>
+#include <QMenuBar>
 
 #include "FactTableModel.h"
 #include "FactSortFilterProxyModel.h"
@@ -14,7 +15,7 @@ namespace Ui {
 class MainWin;
 }
 
-class MainWin : public QDialog
+class MainWin : public QMainWindow
 {
     Q_OBJECT
 
@@ -25,6 +26,7 @@ private slots:
     void onBtnEditFact();
     void onFilterChanged(QString filterValue);
     void onDatesFilterChanged();
+    void OnManageCategories();
 
 public:
     explicit MainWin(QWidget *parent = 0);
@@ -37,6 +39,9 @@ private:
     std::unique_ptr<FactTableModel> factTableModel;
     std::unique_ptr<FactSortFilterProxyModel> sortFilterProxyModel;
 	DataAcces* mDatabase;
+
+    QMenu * mMenuSettings;
+    QAction * mActionManageCategories;
 
     void loadModelData();
 

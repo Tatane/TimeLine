@@ -12,11 +12,15 @@
 #include <QApplication>
 #include "AlxColors.h"
 
-MainWin::MainWin(QWidget *parent) :
-    QDialog(parent),
-    factTableModel(std::make_unique<FactTableModel>()),
-    sortFilterProxyModel(std::make_unique<FactSortFilterProxyModel>(factTableModel)),
-    ui(new Ui::MainWin)
+#include <QMenuBar>
+
+#include "CategoryDialog.h"
+
+MainWin::MainWin(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWin)
+    , factTableModel(std::make_unique<FactTableModel>())
+    , sortFilterProxyModel(std::make_unique<FactSortFilterProxyModel>(factTableModel))
 {
     ui->setupUi(this);
 
@@ -60,6 +64,14 @@ MainWin::MainWin(QWidget *parent) :
 
     // Set the background color of the main window :
     qApp->palette().setColor(QPalette::Window, AlxColors::COLOR_1);
+
+    mActionManageCategories = new QAction("Manage Categories", this);
+    connect(mActionManageCategories, &QAction::triggered, this, &MainWin::OnManageCategories);
+
+    mMenuSettings = new QMenu("Settings", this);
+    mMenuSettings->addAction(mActionManageCategories);
+    menuBar()->addMenu(mMenuSettings);
+
 }
 
 MainWin::~MainWin()
@@ -196,6 +208,12 @@ void MainWin::onDatesFilterChanged()
 {
     sortFilterProxyModel->setDatesFilter(ui->dateEditStartTime->date(), ui->dateEditEndTime->date());
     ui->tableView->update();
+}
+
+void MainWin::OnManageCategories()
+{
+    CategoryDialog categoryDialog;
+    categoryDialog.exec();
 }
 
 

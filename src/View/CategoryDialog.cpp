@@ -13,8 +13,8 @@ CategoryDialog::CategoryDialog(QWidget *parent)
 	connect(ui.btnDelete, SIGNAL(clicked(bool)), this, SLOT(onClickBtnDelete()));
 	connect(ui.btnEdit, SIGNAL(clicked(bool)), this, SLOT(onClickBtnEdit()));
 	connect(ui.listWidgetCategories, SIGNAL(currentItemChanged(QListWidgetItem *, QListWidgetItem *)), this, SLOT(onItemChanged(QListWidgetItem *)));
-
-	displayCategories();
+    connect(ui.btnOk, &QPushButton::clicked, this, &QDialog::close);
+    displayCategories();
 }
 
 CategoryDialog::~CategoryDialog()
